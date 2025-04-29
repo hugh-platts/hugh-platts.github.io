@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Leama Specialist Cars - Prestige New, Used & Lease Cars</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400..900&family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* --- Basic Reset & Variables --- */
+    :root {
+      --bg: #0d0d0d; --bg-card: #1a1a1a; --bg-item: #111; --fg: #fff; --fg-muted: #ccc;
+      --accent: #CF241D; --border-color: #282828; --gap: 1rem; --radius: 4px; --max-w: 1200px;
+      --header-h: 100px; --header-h-shrink: 60px; --footer-bg: #1a1a1a; --footer-text: #eee;
+      --form-input-bg: rgba(255,255,255,0.1); --form-input-border: #555; --sidebar-width: 280px;
+      --font-primary: "Exo 2", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      --font-headings: "Cinzel", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+      --hero-min-height: 75vh;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg-card); color: var(--fg); font-family: var(--font-primary); font-weight: 400; line-height: 1.6; font-size: 14px; overflow-x: hidden; padding-top: var(--header-h); transition: padding-top 0.3s ease; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+    body.sidebar-open { overflow: hidden; }
+    img { display: block; max-width: 100%; height: auto; vertical-align: middle; }
+    .container { width: 90%; max-width: var(--max-w); margin: 0 auto; }
+    a { color: inherit; text-decoration: none; transition: color 0.2s ease; } a:hover { color: var(--accent); }
+    h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5 { font-family: var(--font-headings); font-weight: bold; line-height: 1.2; margin: 0 0 1rem 0; }
+    h1, .h1 { font-size: 2.5rem; } h2, .h2 { font-size: 2rem; } h3, .h3 { font-size: 1.5rem; } h4, .h4 { font-size: 1.25rem; }
+    .icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.15em; margin-right: 0.5em; }
+    .text-accent { color: var(--accent) !important; } .text-muted { color: var(--fg-muted) !important; }
+    .mb-0 { margin-bottom: 0 !important; } .mb-1 { margin-bottom: 0.25rem !important; } .mb-2 { margin-bottom: 0.5rem !important; } .mb-3 { margin-bottom: 1rem !important; } .mb-4 { margin-bottom: 1.5rem !important; } .mb-5 { margin-bottom: 3rem !important; } .mt-4 { margin-top: 1.5rem !important; }
+
+    /* --- Header --- */
+    header#Header_ { position: fixed; top: 0; left: 0; width: 100%; height: var(--header-h); background: #0d0d0d; border-bottom: 1px solid var(--border-color); z-index: 1000; transition: height 0.3s ease; }
+    header#Header_.shrink { height: var(--header-h-shrink); }
+    body.header-shrunk { padding-top: var(--header-h-shrink); }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 1.5rem; max-width: 1880px; margin: 0 auto; }
+    .header__left { display: flex; align-items: center; gap: 0.8rem; flex-shrink: 0;}
+    .header__logo img { height: 82px; width: auto; transition: height 0.3s ease; vertical-align: middle;}
+    header#Header_.shrink .header__logo img { height: 50px; }
+    .header__nav { display: none; /* Hide nav by default, show in media query */ flex-grow: 1; justify-content: center; }
+    .header__nav ul { display: flex; gap: 0.5rem; list-style: none; padding: 0; margin: 0; }
+    .header__nav a { color: var(--fg); text-decoration: none; font-family: var(--font-headings); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.04em; padding: 10px 1vw; transition: color 0.2s ease; font-weight: bold; white-space: nowrap; }
+    .header__nav a:hover { color: var(--accent); } .header__nav a.active { color: var(--accent); }
+    .header__info { display: flex; align-items: center; gap: 1rem; flex-shrink: 0; }
+    .header__phone { font-family: var(--font-headings); font-size: 1.2rem; font-weight: bold; color: var(--fg); text-decoration: none; white-space: nowrap; }
+    .header__social { display: flex; gap: 0.5rem; }
+    .header__social a { background-color: rgba(255, 255, 255, 0.1); color: white; width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; font-size: 1rem; }
+    .header__social a:hover { background-color: rgba(255, 255, 255, 0.2); }
+    .mobile-menu-btn { display: none; background: none; border: none; padding: 0.5rem; cursor: pointer; z-index: 1001; } /* Hidden by default */
+    .mobile-menu-btn img { width: 30px; height: 30px; filter: invert(1); }
+    .phone-icon-link { display: none; } /* Hidden by default */
+
+    /* --- Sidebar Navigation --- */
+    .sidebar-nav { position: fixed; top: 0; left: -100%; width: var(--sidebar-width); height: 100%; background-color: var(--bg-item); box-shadow: 5px 0 15px rgba(0,0,0,0.5); padding: calc(var(--header-h) + 1rem) 1.5rem 2rem; z-index: 1500; transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-y: auto; display: flex; flex-direction: column; }
+    .sidebar-nav.open { left: 0; }
+    .sidebar-nav__close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--fg-muted); font-size: 2rem; line-height: 1; padding: 0.5rem; cursor: pointer; transition: color 0.2s ease; }
+    .sidebar-nav__close-btn:hover { color: var(--accent); }
+    .sidebar-nav ul { list-style: none; margin-top: 1rem; padding: 0; flex-grow: 1; }
+    .sidebar-nav li { margin-bottom: 1rem; }
+    .sidebar-nav a { color: var(--fg); text-decoration: none; font-family: var(--font-headings); font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; display: block; padding: 0.5rem 0; transition: color 0.2s ease; font-weight: bold; }
+    .sidebar-nav a:hover { color: var(--accent); } .sidebar-nav a.active { color: var(--accent); }
+    .sidebar-nav__contact { margin-top: auto; padding-top: 1rem; border-top: 1px solid #333; font-size: 0.9rem; }
+    .sidebar-nav__contact a { font-family: var(--font-primary); font-size: 0.9rem; text-transform: none; letter-spacing: normal; padding: 0.2rem 0; }
+
+    /* --- Homepage Specific Styles --- */
+    /* Hero Section with Image Slider */
+    .hero-section { min-height: var(--hero-min-height); position: relative; overflow: hidden; background-color: #111; display: flex; align-items: center; justify-content: center; text-align: center; padding: 6rem 1rem; color: white; }
+    .hero-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-size: cover; background-position: center center; transition: opacity 1.5s ease-in-out; } /* Fade transition */
+    .hero-bg.active { opacity: 1; z-index: 1; }
+    .hero-bg:not(.active) { opacity: 0; z-index: 0; }
+    .hero-overlay { /* Optional overlay */ position: absolute; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); z-index: 2; }
+    .hero-content { position: relative; z-index: 3; } /* Content above backgrounds/overlay */
+    .hero-content h1 { font-family: var(--font-headings); font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; text-shadow: 2px 2px 6px rgba(0,0,0,0.7); line-height: 1.1; text-transform: uppercase; }
+    .hero-content p { font-family: var(--font-primary); font-size: 1.3rem; max-width: 750px; margin: 0 auto 2.5rem auto; opacity: 0.9; text-shadow: 1px 1px 3px rgba(0,0,0,0.7); }
+    .hero-actions { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .hero-btn { display: inline-block; padding: 0.8rem 2.2rem; border-radius: var(--radius); text-decoration: none; font-family: var(--font-headings); font-size: 1rem; font-weight: bold; border: 2px solid transparent; transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; line-height: 1.5; }
+    .hero-btn--primary { background-color: var(--accent); color: #fff; border-color: var(--accent); } .hero-btn--primary:hover { background-color: #a00; border-color: #a00; }
+    .hero-btn--secondary { background-color: transparent; color: #fff; border-color: rgba(255,255,255,0.8); } .hero-btn--secondary:hover { background-color: rgba(255,255,255,0.1); border-color: #fff; }
+
+    /* General Section Styling */
+    .content-section { padding: 4rem 0; border-bottom: 1px solid var(--border-color); background-color: var(--bg-card); }
+    .content-section--darker { background-color: var(--bg); }
+    .content-section:last-of-type { border-bottom: none; }
+    .content-section .container { max-width: 1140px; }
+    .section-title { text-align: center; font-size: 2.2rem; margin-bottom: 3rem; text-transform: uppercase; letter-spacing: 0.05em; position: relative; padding-bottom: 0.8rem; }
+    .section-title::after { content: ''; position: absolute; bottom: 0; left: 50%; transform: translateX(-50%); width: 70px; height: 3px; background-color: var(--accent); }
+    .diamond-title { position: relative; padding-left: 45px; text-align: left; margin-bottom: 1rem; }
+    .diamond-title::before { content: ''; position: absolute; left: 0; top: 50%; transform: translateY(-50%) rotate(45deg); width: 20px; height: 20px; background-color: var(--accent); }
+
+    /* Featured Stock Section */
+    .featured-stock-section { background-color: var(--bg); }
+    .stock-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: var(--gap); padding-bottom: 3rem; min-height: 300px; }
+    .grid-message { grid-column: 1 / -1; text-align: center; color: var(--fg-muted); padding: 2rem; font-size: 1.1rem; }
+    .car-card { background-color: #181818; border: 1px solid #282828; border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .car-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+    .car-card__image { position: relative; height: 220px; overflow: hidden; background-color: #222; cursor: pointer; }
+    .car-card__image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; display: block; }
+    .car-card__image-count { position: absolute; top: 0.8rem; left: 0.8rem; background-color: var(--accent); color: white; padding: 0.3rem 0.7rem; border-radius: var(--radius); font-size: 0.9rem; font-weight: bold; z-index: 2; display: flex; align-items: center; gap: 0.4em; opacity: 0.9; pointer-events: none; }
+    .car-card__image-count .fa-image { font-size: 1em; }
+    .car-card__content { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .car-card__title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.2rem; line-height: 1.3; color: var(--fg); text-transform: uppercase; }
+    .car-card__model { font-size: 0.95rem; color: var(--fg-muted); margin-bottom: 1rem; }
+    .car-card__price { margin-top: auto; padding-top: 1rem; border-top: 1px solid #282828; display: flex; justify-content: space-between; align-items: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+    .car-card__price-full { font-size: 1.2rem; font-weight: 600; color: var(--accent); line-height: 1; }
+    .car-card__price-monthly { font-size: 0.8rem; color: var(--fg-muted); text-align: right; line-height: 1; }
+    .car-card__buttons { margin-top: 1rem; display: flex; gap: 0.8rem; }
+    .car-card__button { flex: 1; display: inline-block; padding: 0.6rem 1rem; border-radius: var(--radius); cursor: pointer; text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 500; border: none; transition: background-color 0.2s ease, color 0.2s ease; text-transform: uppercase; letter-spacing: 0.03em; text-align: center; }
+    .car-card__button--finance { background: var(--accent); color: #fff; } .car-card__button--finance:hover { background: #a00; }
+    .car-card__button--details { background: #333; color: var(--fg-muted); border: 1px solid #444; } .car-card__button--details:hover { background: #444; color: #fff; }
+
+    /* Intro Section (Welcome) */
+    .welcome-section .row { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 2rem; }
+    .welcome-section__text { flex: 1 1 55%; min-width: 300px; }
+    .welcome-section__text h1.diamond-title { font-size: 2.5rem; line-height: 1.1; margin-bottom: 0.5rem; }
+    .welcome-section__text h2.subtitle { font-family: var(--font-primary); font-size: 1.3rem; color: var(--fg-muted); margin-bottom: 1.5rem; font-weight: 400; text-transform: none; letter-spacing: normal; }
+    .welcome-section__text p { margin-bottom: 1rem; color: var(--fg-muted); }
+    .welcome-section__search { flex: 1 1 35%; min-width: 300px; background-color: var(--bg); padding: 1.5rem; border-radius: var(--radius); }
+    .welcome-section__search h3 { text-align: center; font-size: 1.5rem; margin-bottom: 1.5rem; }
+    .welcome-section__search .form-group { margin-bottom: 1rem; }
+    .welcome-section__search label { display: block; font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 0.4rem; text-transform: uppercase; }
+    .welcome-section__search select {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      background-color: #fff;
+      border: 1px solid var(--form-input-border);
+      color: #000;
+      border-radius: var(--radius);
+      font-family: inherit;
+      font-size: 0.9rem;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23000000' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 0.7rem center;
+      background-size: 1em;
+      padding-right: 2.5rem;
+      min-height: calc(0.7rem * 2 + 1em + 2px);
+    }
+    .welcome-section__search .btn-search {
+      display: block;
+      width: 100%;
+      padding: 0.8rem 1rem;
+      background-color: #cf241d;
+      color: #ffffff;
+      border: none;
+      border-radius: var(--radius);
+      font-family: var(--font-headings);
+      font-size: 1rem;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+      font-weight: bold;
+      margin-top: 1.5rem;
+    }
+    .welcome-section__search .btn-search:hover { background-color: #e0e0e0; }
+
+    /* Quick Links Grid Section */
+    .quicklinks-section { padding: 0; border-bottom: none;}
+    .quicklinks-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 0; }
+     @media (min-width: 992px) { .quicklinks-grid { grid-template-columns: repeat(4, 1fr); } }
+     @media (min-width: 768px) and (max-width: 991.98px) { .quicklinks-grid { grid-template-columns: repeat(2, 1fr); } }
+    .quicklinks-item { position: relative; padding-bottom: 60%; background-size: cover; background-position: center; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+    .quicklinks-item::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.4); transition: background-color 0.3s ease; }
+    .quicklinks-item:hover::before { background-color: rgba(0, 0, 0, 0.7); }
+    .quicklinks-item a { position: absolute; top: 0; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; z-index: 2; color: white; padding: 1rem; }
+    .quicklinks-item h3 { font-family: var(--font-headings); font-size: 1.6rem; font-weight: 700; text-transform: uppercase; margin-bottom: 0.5rem; text-shadow: 1px 1px 3px rgba(0,0,0,0.5); line-height: 1.1; transition: color 0.3s ease; }
+    .quicklinks-item h3 span { display: block; font-size: 60%; font-weight: normal; opacity: 0.8; }
+    .quicklinks-item b { font-family: var(--font-primary); font-weight: 500; font-size: 0.9rem; margin-top: 0.5rem; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); opacity: 0.9; }
+    .quicklinks-item i { font-size: 0.8em; transition: transform 0.2s ease-in-out; margin-left: 0.3em;}
+    .quicklinks-item a:hover i { transform: translateX(5px); }
+
+    /* Why Choose Section */
+    .whychoose-section .row { display: flex; flex-wrap: wrap; gap: 2rem; }
+    .whychoose-section__intro { flex: 0 0 100%; margin-bottom: 2rem; }
+    .whychoose-section__intro h1.diamond-title { font-size: 3rem; line-height: 1; margin-bottom: 1.5rem; }
+    .whychoose-section__intro .experience-text { font-family: var(--font-primary); font-size: 1.5rem; color: var(--fg-muted); margin-bottom: 0.2rem; }
+    .whychoose-section__intro .experience-text strong { font-family: var(--font-headings); font-size: 3rem; color: var(--fg); display: block; line-height: 1; }
+    .whychoose-section__items { flex: 1 1 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .whychoose-item { background-color: var(--bg-item); padding: 1.5rem; border-radius: var(--radius); border: 1px solid var(--border-color); }
+    .whychoose-item h3 { font-size: 1.3rem; margin-bottom: 0.8rem; color: var(--fg); }
+    .whychoose-item p { font-size: 0.95rem; color: var(--fg-muted); margin-bottom: 0.5rem; }
+    .whychoose-item a { font-size: 0.95rem; font-weight: bold; color: var(--accent); }
+    .whychoose-item a:hover { text-decoration: underline; }
+    @media (min-width: 992px) { .whychoose-section__intro { flex: 0 0 30%; margin-bottom: 0; padding-right: 2rem;} .whychoose-section__items { flex: 1 1 65%; grid-template-columns: repeat(2, 1fr); } }
+
+    /* Find Us Section */
+    .find-us-section { background-color: var(--bg-card); padding: 0; border-bottom: 1px solid var(--border-color); }
+    .find-us-row { display: flex; flex-wrap: wrap; align-items: stretch; gap: 0; }
+    .find-us-map, .find-us-content-wrapper { flex: 1 1 50%; min-width: 300px; }
+    .find-us-map { position: relative; padding-bottom: 50%; height: 0; overflow: hidden; }
+    .find-us-map iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    @media (min-width: 768px) { .find-us-map { padding-bottom: 0; height: auto; min-height: 450px; } }
+    .find-us-content-wrapper { background-color: var(--bg); display: flex; align-items: center; }
+    .find-us-content { padding: 3rem; width: 100%; }
+    .find-us-content h3 { font-size: 2rem; text-transform: uppercase; margin-bottom: 1.5rem; }
+    .find-us-content p { color: var(--fg-muted); margin-bottom: 1rem; line-height: 1.7; }
+    .find-us-form label { display: block; font-size: 0.85rem; color: var(--fg-muted); margin-bottom: 0.4rem; text-transform: uppercase; }
+    .find-us-form input[type="text"] { background-color: white; color: #333; border: 1px solid var(--form-input-border); padding: 0.8rem 1rem; border-radius: var(--radius); width: 100%; max-width: 340px; font-family: inherit; font-size: 0.95rem; margin-bottom: 1rem; }
+    .find-us-form .btn-submit { background-color: var(--accent); color: #fff; border: none; padding: 0.8rem 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: var(--radius); cursor: pointer; transition: background-color 0.2s ease; font-family: var(--font-headings); font-weight: bold; }
+    .find-us-form .btn-submit:hover { background-color: #a00; }
+
+    /* --- Footer Styles --- */
+    #Footer { padding: 3rem 0; background-color: var(--footer-bg); color: var(--footer-text); background-image: url('https://www.leama.co.uk/dist/img/hero/hero-3-1920.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat; position: relative; }
+    #Footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); z-index: 1; }
+    #Footer .container { position: relative; z-index: 2; max-width: 1140px; }
+    #Footer h3, #Footer h4 { font-family: var(--font-headings); font-weight: 600; margin-bottom: 1.2rem; font-size: 1.3rem; }
+    #Footer p, #Footer td, #Footer small, #Footer span { font-family: var(--font-primary); font-size: 0.95rem; }
+    #Footer .contact-block p, #Footer .director-block p { margin-bottom: 0.7rem; line-height: 1.6; display: flex; align-items: center; }
+    #Footer .contact-block i, #Footer .director-block i, #Footer .contact-block img.icon, #Footer .director-block img.icon { margin-right: 0.7em; width: 1.2em; height: 1.2em; text-align: center; flex-shrink: 0; filter: invert(90%) sepia(0%) saturate(7479%) hue-rotate(186deg) brightness(110%) contrast(95%); }
+    #Footer .contact-block a:hover img.icon, #Footer .director-block a:hover img.icon, #Footer .contact-block a:hover i, #Footer .director-block a:hover i { filter: invert(27%) sepia(99%) saturate(3110%) hue-rotate(346deg) brightness(90%) contrast(111%); }
+    #Footer .Hours { border: none; color: var(--footer-text); width: 100%; margin-top: 1rem; }
+    #Footer .Hours td { border-top: 1px solid #444; padding: 0.6rem 0; } #Footer .Hours tr:first-child td { border-top: none; }
+    #Footer .Hours span { display: inline-block; min-width: 110px; }
+    #Footer .social-icons { margin-top: 1rem; display: flex; gap: 0.7rem; align-items: center; }
+    #Footer .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; line-height: 38px; text-align: center; border-radius: 50%; color: #fff; transition: opacity 0.2s ease; background-color: rgba(255, 255, 255, 0.1); }
+    #Footer .social-icons a:hover { opacity: 0.8; }
+    #Footer .social-icons img.icon { width: 20px; height: 20px; margin-right: 0; filter: invert(1); }
+    #Footer .social-icons a[href*="linkedin.com"] img.icon { filter: none; }
+    #Footer .footer-form { background: rgba(0,0,0,0.4); padding: 2rem; border-radius: var(--radius); }
+    #Footer .footer-form h4 { text-align: center; margin-bottom: 1.5rem; }
+    #Footer .form-group { margin-bottom: 1.2rem; }
+    #Footer .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    #Footer .form-control { background-color: var(--form-input-bg); border: 1px solid var(--form-input-border); color: var(--fg); padding: 0.8rem 1rem; border-radius: var(--radius); width: 100%; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    #Footer .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(207, 36, 29, 0.3); }
+    #Footer textarea.form-control { resize: vertical; min-height: 100px; }
+    #Footer .required-asterisk { color: var(--accent); font-style: normal; margin-left: 0.2em; }
+    #Footer .footer-form-submit { text-align: right; margin-top: 1.5rem; }
+    #Footer .btn-submit { background-color: var(--accent); color: #fff; border: none; padding: 0.8rem 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: var(--radius); cursor: pointer; transition: background-color 0.2s ease; font-family: var(--font-headings); font-weight: bold;}
+    #Footer .btn-submit:hover:not(:disabled) { background-color: #a00; }
+    #Footer .btn-submit:disabled { background-color: #555; cursor: not-allowed; }
+    #Footer .row { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+    #Footer [class*="col-"] { padding-left: 15px; padding-right: 15px; width: 100%; }
+    @media (min-width: 768px) { #Footer .col-sm-6 { flex: 0 0 50%; max-width: 50%; } #Footer .col-sm-12 { flex: 0 0 100%; max-width: 100%; } }
+    @media (min-width: 992px) { #Footer .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; } #Footer .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; } }
+    #Footer hr { border: 0; border-top: 1px solid #444; margin: 1.5rem 0; }
+    #footer-after { background-color: #0c0c0c; padding: 1.5rem 0; color: #aaa; font-size: 0.8rem; text-align: center; }
+    #footer-after a {color: #aaa; } #footer-after a:hover {color: var(--fg); }
+    #footer-after p { margin-bottom: 0.5rem; font-size: inherit; line-height: 1.5;}
+
+    /* --- Responsive Breakpoints --- */
+    /* Desktop XL */
+    @media (min-width: 1300px) { .header__nav { display: flex; } .header__nav a { font-size: 1rem; padding: 15px 1vw; } }
+    /* Desktop & Large Tablets */
+    @media (min-width: 992px) { .header__nav { display: flex; } } /* Show desktop nav */
+    /* Tablets and below */
+    @media (max-width: 1680px) { .header__nav { display: none; } .mobile-menu-btn { display: inline-flex; } .header__inner { padding: 0 1rem;} .header__phone { font-size: 1rem; } .header__social { display: none; } }
+    /* Mobile */
+    @media (max-width: 991.98px) {
+         body { padding-top: var(--header-h-shrink); }
+         header#Header_ { height: var(--header-h-shrink); }
+         .header__info { gap: 0.5rem; }
+         .header__phone { display: none; }
+         .header__social { display: none; }
+         .phone-icon-link { display: inline-flex; /* Show phone icon link */ color: white; font-size: 1.5rem; align-items: center;}
+         .phone-icon { width: 24px; height: 24px; filter: invert(1); }
+
+         h1, .h1 { font-size: 2rem; } h2, .h2 { font-size: 1.8rem; } h3, .h3 { font-size: 1.3rem; }
+         .section-title { font-size: 1.8rem; margin-bottom: 2rem;}
+         .whychoose-section__intro { text-align: center; margin-bottom: 2rem; }
+         .whychoose-section__intro h1.diamond-title { text-align: center; padding-left: 0; }
+         .whychoose-section__intro h1.diamond-title::before { left: 50%; transform: translateX(-50%) translateY(-50%) rotate(45deg); }
+         .welcome-section .row { flex-direction: column; }
+         .quicklinks-item h3 { font-size: 1.4rem; }
+         .header__logo img { height: 40px; } /* Adjust logo for smaller header */
+    }
+    @media (max-width: 767px) {
+        .hero-content h1 { font-size: 2.2rem; } .hero-content p { font-size: 1.1rem; }
+        .content-section { padding: 2.5rem 0; } .section-title { font-size: 1.6rem; margin-bottom: 1.5rem;}
+        #Footer .footer-form { padding: 1.5rem; }
+        .find-us-content { padding: 2rem; }
+    }
+    @media (max-width: 480px) {
+        :root { --sidebar-width: 250px; --hero-min-height: 60vh;}
+        .hero-section { padding: calc(var(--header-h-shrink) + 2rem) 1rem 4rem 1rem; }
+        .hero-content h1 { font-size: 1.8rem; } .hero-content p { font-size: 1rem; }
+        .hero-actions { flex-direction: column; gap: 0.8rem; align-items: center; }
+        .hero-btn { width: 80%; max-width: 300px; text-align: center; }
+        .content-section { padding: 2rem 0; } .section-title { font-size: 1.4rem; margin-bottom: 1rem;}
+        .whychoose-section__intro h1.diamond-title { font-size: 2.5rem;}
+        .whychoose-section__intro .experience-text strong { font-size: 2.5rem;}
+        .quicklinks-grid { grid-template-columns: 1fr; } .quicklinks-item { padding-bottom: 70%; }
+        .find-us-map { padding-bottom: 75%; }
+    }
+
+
+  </style>
+</head>
+
+<body>
+  <header id="Header_">
+    <div class="header__inner container">
+        <div class="header__left">
+             <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
+                <img src="/assets/menu.png" alt="Menu">
+            </button>
+            <a href="index.html" class="header__logo">
+                <img src="https://www.leama.co.uk/dist/img/logo.png" alt="Leama Specialist Cars">
+            </a>
+        </div>
+        <nav class="header__nav">
+             <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="stock.html">Our Stock</a></li>
+                <li><a href="/previously-sold">Previously Sold</a></li>
+                <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+                <li><a href="/finance">Finance</a></li>
+                <li><a href="/reviews">Reviews</a></li>
+                <li><a href="/contact-us">Contact</a></li>
+            </ul>
+        </nav>
+        <div class="header__info">
+            <a href="tel:01565832900" class="header__phone">01565 832900</a>
+            <div class="header__social">
+                <a target="_blank" rel="noopener" href="https://ca.linkedin.com/company/leamaspecialistcars" aria-label="Follow Us On LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                <a target="_blank" rel="noopener" href="https://www.instagram.com/leamacars/" aria-label="Follow Us On Instagram"><i class="fab fa-instagram"></i></a>
+            </div>
+            <a href="tel:01565832900" class="phone-icon-link" aria-label="Call Us">
+                 <i class="fas fa-phone"></i>
+            </a>
+        </div>
+    </div>
+</header>
+
+  <nav class="sidebar-nav" id="sidebar-nav" aria-hidden="true">
+      <button class="sidebar-nav__close-btn" id="sidebar-close" aria-label="Close menu">×</button>
+      <ul>
+          <li><a href="index.html" class="active">Home</a></li> <li><a href="stock.html">Our Stock</a></li>
+          <li><a href="/previously-sold">Previously Sold</a></li> <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+          <li><a href="/finance">Finance</a></li> <li><a href="/reviews">Reviews</a></li> <li><a href="/contact-us">Contact</a></li>
+      </ul>
+      <div class="sidebar-nav__contact"> <a href="tel:01565832900"><img src="/assets/phone.png" alt="" class="icon icon-sm"> 01565 832900</a></div>
+  </nav>
+
+  <main>
+    <section class="hero-section">
+        <div id="hero-bg-1" class="hero-bg active"></div>
+        <div id="hero-bg-2" class="hero-bg"></div>
+        <div class="hero-overlay"></div> <div class="hero-content container">
+            <h1>Leama Specialist Cars</h1>
+            <p>Prestige, sports performance or luxury cars in Knutsford, Cheshire. Excellence Defined.</p>
+            <div class="hero-actions">
+                <a href="stock.html" class="hero-btn hero-btn--primary">View Our Stock</a>
+                <a href="#footer-contact-form" class="hero-btn hero-btn--secondary">Get In Touch</a>
+            </div>
+        </div>
+    </section>
+
+     <section class="content-section featured-stock-section">
+        <div class="container">
+            <h2 class="section-title">Featured Stock</h2>
+            <div class="stock-grid" id="featured-stock-grid">
+                 <p class="grid-message">Loading featured cars...</p>
+            </div>
+             <div style="text-align: center; margin-top: 2rem;">
+                 <a href="stock.html" class="hero-btn hero-btn--primary">View All Stock</a>
+             </div>
+        </div>
+    </section>
+
+    <section class="content-section welcome-section">
+         <div class="container">
+            <div class="row">
+                <div class="welcome-section__text">
+                    <h1 class="diamond-title">Welcome to Leama Specialist Cars</h1>
+                    <h2 class="subtitle">Prestige New, Used & Lease Cars in Knutsford, Cheshire</h2>
+                    <p>Founded over 16 years ago and bringing together Mark Platts and Jonathan Travis’ 75 years’ combined experience for the benefit of our valued clients, Leama Specialist Cars of Knutsford, Cheshire, is synonymous with depth of knowledge and meticulous quality in prestige, luxury, sports and 4x4 cars.</p>
+                    <p>Renowned for our Mercedes-Benz stocklist in particular, Leama is a multi-brand car sales and leasing company and works across all marques. We hand-pick every one of our used cars, many of which we sold originally and are therefore confident of their provenance, and ensure that each one is fastidiously checked before sale.</p>
+                     <p>As a fully independent business, Leama Specialist Cars is able to act dynamically and decisively in our clients’ interests, making us the refreshing alternative to main dealerships. As a forward-thinking and innovative company, we make things happen.</p>
+                </div>
+                <div class="welcome-section__search">
+                     <h3>Quick Stock Search</h3>
+                     <form id="quick-search-form" action="stock.html" method="GET">
+                         <div class="form-group">
+                             <label for="home-make">Make</label>
+                             <select id="home-make" name="make" class="">
+                                 <option value="">Any Make</option>
+                                 </select>
+                         </div>
+                         <div class="form-group">
+                            <label for="home-price">Max Price</label>
+                            <select id="home-price" name="priceMax" class="">
+                                <option value="">Any Price</option>
+                                <option value="25000">Up to £25,000</option>
+                                <option value="50000">Up to £50,000</option>
+                                <option value="75000">Up to £75,000</option>
+                                <option value="100000">Up to £100,000</option>
+                                <option value="150000">Up to £150,000</option>
+                                <option value="250000">Up to £250,000</option>
+                                 <option value="500000">Up to £500,000</option>
+                            </select>
+                        </div>
+                         <button type="submit" class="btn-search">Search Stock</button>
+                     </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+     <section class="content-section content-section--darker quicklinks-section">
+             <div class="quicklinks-grid">
+                 <div class="quicklinks-item" style="background-image: url('https://www.leama.co.uk/dist/img/ql/grid/ql-1.jpg');">
+                     <a href="stock.html" title="View our Showroom">
+                         <h3><span>View Our </span>Stock</h3>
+                         <b>View vehicles for sale <i class="fas fa-long-arrow-alt-right"></i></b>
+                     </a>
+                 </div>
+                 <div class="quicklinks-item" style="background-image: url('https://www.leama.co.uk/dist/img/ql/grid/ql-2.jpg');">
+                     <a href="/finance" title="View our Vehicle Financing">
+                         <h3><span>Apply Today </span>Finance</h3>
+                          <b>Working with our partners <i class="fas fa-long-arrow-alt-right"></i></b>
+                     </a>
+                 </div>
+                  <div class="quicklinks-item" style="background-image: url('https://www.leama.co.uk/dist/img/ql/grid/ql-3.jpg');">
+                     <a href="/part-exchange" title="Part Ex Today">
+                          <h3><span>Trade with us </span>Part Ex</h3>
+                          <b>Send us your vehicle details <i class="fas fa-long-arrow-alt-right"></i></b>
+                     </a>
+                 </div>
+                 <div class="quicklinks-item" style="background-image: url('https://www.leama.co.uk/dist/img/ql/grid/ql-4.jpg');">
+                     <a href="#footer-contact-form" title="Contact Leama Specialist Cars">
+                         <h3><span>Get In Touch </span>Contact</h3>
+                         <b>Call or message us <i class="fas fa-long-arrow-alt-right"></i></b>
+                     </a>
+                 </div>
+             </div>
+    </section>
+
+    <section class="content-section whychoose-section">
+        <div class="container">
+             <div class="row">
+                <div class="whychoose-section__intro">
+                    <h1 class="diamond-title">Why Choose Leama</h1>
+                    <div class="experience-text">
+                        <strong>75+</strong>
+                        Combined years experience
+                    </div>
+                 </div>
+                 <div class="whychoose-section__items">
+                     <div class="whychoose-item">
+                         <h3>Our Depth of Knowledge</h3>
+                         <p>Leama Specialist Cars imparts to clients a wealth of industry knowledge through our combined experience of over 75 years in senior positions...</p>
+                     </div>
+                     <div class="whychoose-item">
+                         <h3>Prestige Leasing</h3>
+                         <p>Always lower than main dealers on used prestige and sports vehicles, and on most new prestige and sports marques.</p>
+                         <p><a href="/prestige-leasing">Leasing Options <i class="fas fa-long-arrow-alt-right"></i></a></p>
+                     </div>
+                     <div class="whychoose-item">
+                         <h3>The Highest Standard</h3>
+                         <p>Customer service excellence is evident in all that Leama Specialist Cars does, from meticulously checking each of our hand-picked used prestige vehicles...</p>
+                     </div>
+                    <div class="whychoose-item">
+                         <h3>Flexible Car Finance</h3>
+                         <p>Car finance can be arranged via Leama’s extensive industry network, ensuring that a flexible, affordable and reliable solution is found.</p>
+                         <p><a href="/finance">View Finance Options <i class="fas fa-long-arrow-alt-right"></i></a></p>
+                     </div>
+                      <div class="whychoose-item">
+                         <h3>Part Exchange</h3>
+                         <p>Leama makes the part-exchange process as seamless as possible, helping our clients maximise the value of their existing vehicles.</p>
+                     </div>
+                     <div class="whychoose-item">
+                         <h3>Let Us Find It</h3>
+                         <p>Our highly respected industry knowledge enables us to source any make and model of car or van, from a Transit to some of the rarest, most exclusive vehicles.</p>
+                     </div>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section find-us-section">
+        <div class="find-us-row">
+             <div class="find-us-map">
+                 <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2385.867729818015!2d-2.358811684184094!3d53.29856697996885!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x487a525133ed1d7b%3A0xf6d6b4398dee5ea0!2sBrookdale%20Centre%2C%20Manchester%20Rd%2C%20Knutsford%20WA16%200SR!5e0!3m2!1sen!2suk!4v1678888888888!5m2!1sen!2suk" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+             </div>
+             <div class="find-us-content-wrapper">
+                 <div class="find-us-content">
+                     <h3 class="h2 text-uppercase">How to find us</h3>
+                     <p>We’re conveniently located just south of Manchester and Liverpool.</p>
+                     <p>If you’re travelling by car, we’re easily accessible via 2 major motorways. Located just 1 mile from jnc 19 of the M6 and 5.8 miles from jnc 8 of the M56.</p>
+                     <p>Travelling by plane is also an option, with Manchester Airport just 10 miles from our dealership.</p>
+                     <p>Our closest Train Station is Knutsford just 1.4 miles away.</p>
+                     <br>
+                     <form class="find-us-form" onsubmit="handleDirectionsSubmit(event)">
+                         <label for="find-us-postcode">Get Directions</label>
+                         <input type="text" id="find-us-postcode" name="postcode" placeholder="Enter Your Postcode" class="" required="">
+                         <br>
+                         <button type="submit" class="btn-submit">Get Directions</button>
+                     </form>
+                 </div>
+            </div>
+        </div>
+    </section>
+
+
+  </main>
+
+  <footer id="Footer" class="section background text-white">
+     <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-3 contact-block"> <h4 class="h3 text-white mb-3">Contact & Hours</h4> <p><a href="#" target="_blank" rel="noopener" class="address-link"><i class="fas fa-map-marker-alt text-accent icon"></i> <span>Brookdale Centre,</span> <span>Manchester Road,</span> <span>Knutsford, Cheshire, WA16 0SR</span></a></p> <p><a href="tel:01565832900"><img src="/assets/phone.png" alt="" class="icon">Office: 01565 832900</a></p> <table class="Hours table"><tbody><tr><td class="px-0"><span>Monday - Friday</span></td><td class="px-0 text-right">08:30 - 17:30</td></tr><tr><td class="px-0"><span>Saturday - Sunday</span></td><td class="px-0 text-right"><small>By Appointment</small></td></tr></tbody></table> </div>
+            <div class="col-md-4 col-sm-6 mb-3 director-block"> <h4 class="h3 text-white mb-3">Directors</h4> <p><i class="fas fa-user text-accent icon"></i><strong>Mark Platts</strong></p> <p><a href="tel:07976914729"><img src="/assets/phone.png" alt="" class="icon">07976 914729</a></p> <p><a href="mailto:mark@leama.co.uk"><i class="fas fa-at text-accent icon"></i>mark@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447976914729" aria-label="WhatsApp Mark"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr> <p><i class="fas fa-user text-accent icon"></i><strong>Jonathan Travis</strong></p> <p><a href="tel:07711840456"><img src="/assets/phone.png" alt="" class="icon">07711 840456</a></p> <p><a href="mailto:jonathan@leama.co.uk"><i class="fas fa-at text-accent icon"></i>jonathan@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447711840456" aria-label="WhatsApp Jonathan"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr> <h4 class="h3 text-white mb-2 pt-3">Connect With Us</h4> <div class="social-icons" itemscope itemtype="http://schema.org/Organization"><meta itemprop="url" content="https://www.leama.co.uk"><a target="_blank" rel="noopener" itemprop="sameAs" href="https://ca.linkedin.com/company/leamaspecialistcars" aria-label="LinkedIn"><img src="/assets/Linkedin.png" alt="LinkedIn" class="icon"></a> <a target="_blank" rel="noopener" itemprop="sameAs" href="https://www.instagram.com/leamacars/" aria-label="Instagram"><img src="/assets/instagram.png" alt="Instagram" class="icon"></a></div> </div>
+            <div class="col-md-4 col-sm-12"> <form class="footer-form" id="footer-contact-form" action="/path-to-your-submit-script" method="post" novalidate> <h4 class="h3 text-white mb-3">Get In Touch</h4> <input hidden name="form_subject" value="Homepage Footer Enquiry"> <div class="form-group"><label class="form-label" for="footer_name">Name <i class="required-asterisk">*</i></label><input name="customer_name" type="text" class="form-control" id="footer_name" required placeholder="Your Full Name"></div> <div class="form-group"><label class="form-label" for="footer_email">Email <i class="required-asterisk">*</i></label><input name="customer_email" type="email" class="form-control" id="footer_email" required placeholder="your.email@example.com"></div> <div class="form-group"><label class="form-label" for="footer_phone">Phone No. <i class="required-asterisk">*</i></label><input name="customer_phone" type="tel" class="form-control" id="footer_phone" required placeholder="Your Contact Number"></div> <div class="form-group"><label class="form-label" for="footer_message">Message <i class="required-asterisk">*</i></label><textarea class="form-control" name="customer_message" rows="4" id="footer_message" required placeholder="How can we help?"></textarea></div> <div class="footer-form-submit"><button id="footerSendBtn" type="submit" class="btn-submit">Send Message</button></div> </form> </div>
+        </div>
+    </div>
+  </footer>
+
+   <section id="footer-after" style="background-color: #0c0c0c; padding: 1.5rem 0; color: #aaa; font-size: 0.8rem; text-align: center;">
+        <div class="container">
+             <p class="small mb-2"> <span>Company No. 4752047</span> | <span>FCA No. 648897</span> </p>
+             <p class="small mb-2"> Registered Office Address: The Copper Room The Deva Centre, Trinity Way, Manchester, Lancashire, M3 7BG </p>
+             <p class="small mb-0"> <a href="/policies#V-internal-disclosure" class="text-muted"><u>Initial Disclosure</u></a> | <a href="/policies#V-policies" class="text-muted"><u>Privacy Policy</u></a> | <a href="#" target="_blank" class="text-muted"><u>Complaints Handling</u></a> | <a href="#" target="_blank" class="text-muted"><u>Terms and Conditions</u></a> | <a href="/policies#V-treating-customers-fairly" class="text-muted"><u>Treating Customers Fairly</u></a> | <a href="#" onclick="alert('Cookie preferences management not implemented'); return false;" class="text-muted"><u>Cookie Preferences</u></a> </p>
+        </div>
+    </section>
+
+  <script>
+    'use strict';
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- DOM Elements ---
+        const featuredStockGrid = document.getElementById('featured-stock-grid');
+        const quickSearchMakeSelect = document.getElementById('home-make');
+        const heroSection = document.querySelector('.hero-section'); // Hero section element
+        const heroBg1 = document.getElementById('hero-bg-1');
+        const heroBg2 = document.getElementById('hero-bg-2');
+
+        const advertsDir = 'adverts';
+        const defaultImageUrl = '/assets/placeholder-car.png';
+        let allCarsData = [];
+
+        // --- Hero Image Slideshow ---
+        const heroImages = [
+            'https://www.leama.co.uk/dist/img/hero/hero-1-1920.jpg', // New image
+            'https://www.leama.co.uk/dist/img/hero/hero-2-1920.jpg'  // Original image
+        ];
+        let currentHeroImageIndex = 0;
+
+        function setHeroBackgrounds() {
+            if (heroBg1) heroBg1.style.backgroundImage = `url('${heroImages[0]}')`;
+            if (heroBg2) heroBg2.style.backgroundImage = `url('${heroImages[1]}')`;
+        }
+
+        function switchHeroImage() {
+            if (!heroBg1 || !heroBg2) return; // Exit if elements aren't found
+
+            currentHeroImageIndex = (currentHeroImageIndex + 1) % heroImages.length;
+
+            // Simple fade by toggling 'active' class
+            if (currentHeroImageIndex === 0) {
+                heroBg1.classList.add('active');
+                heroBg2.classList.remove('active');
+            } else {
+                heroBg1.classList.remove('active');
+                heroBg2.classList.add('active');
+            }
+        }
+
+        // Initial setup and start slideshow
+        if (heroImages.length > 1) {
+            setHeroBackgrounds();
+            setInterval(switchHeroImage, 7000); // Switch every 7 seconds
+        } else if (heroImages.length === 1 && heroBg1) {
+             // Only one image provided, set it statically
+             heroBg1.style.backgroundImage = `url('${heroImages[0]}')`;
+             heroBg1.classList.add('active');
+             if(heroBg2) heroBg2.remove(); // Remove the second div if not needed
+        }
+
+
+        // --- Helper Functions (createCarCard, parsePrice - reusable) ---
+        function createCarCard(car) { /* ... Function definition is the same as previous version ... */
+            const itemNumber = car.item_number || 'UNKNOWN';
+            const safeItemNumber = String(itemNumber).replace(/[^a-zA-Z0-9_-]/g, '');
+            const detailsUrl = `${advertsDir}/car_${safeItemNumber}.html`;
+            const images = Array.isArray(car.images) ? car.images : [];
+            const img1 = images.length > 0 ? images[0] : defaultImageUrl;
+            const img2 = images.length > 1 ? images[1] : null;
+            const imageCount = images.length;
+            const card = document.createElement('div'); card.className = 'car-card';
+            const imageLink = document.createElement('a'); imageLink.href = detailsUrl; imageLink.className = 'car-card__image'; imageLink.setAttribute('aria-label', `View details for ${car.brand || ''} ${car.model || ''}`);
+            if (imageCount > 0) { const countDiv = document.createElement('div'); countDiv.className = 'car-card__image-count'; countDiv.textContent = imageCount + ' '; const icon = document.createElement('i'); icon.className = 'fas fa-image'; countDiv.appendChild(icon); imageLink.appendChild(countDiv); }
+            const imgElem = document.createElement('img'); imgElem.src = img1; imgElem.alt = `${car.brand || ''} ${car.model || ''}`; imgElem.loading = 'lazy'; imgElem.dataset.img1 = img1; if (img2) { imgElem.dataset.img2 = img2; } imgElem.onerror = () => { imgElem.src = defaultImageUrl; }; imageLink.appendChild(imgElem);
+            const contentDiv = document.createElement('div'); contentDiv.className = 'car-card__content';
+            const title = document.createElement('h3'); title.className = 'car-card__title'; title.textContent = car.brand || 'Unknown Brand'; contentDiv.appendChild(title);
+            const modelP = document.createElement('p'); modelP.className = 'car-card__model'; modelP.textContent = car.model || 'Unknown Model'; contentDiv.appendChild(modelP);
+            const priceDiv = document.createElement('div'); priceDiv.className = 'car-card__price'; const priceFull = document.createElement('span'); priceFull.className = 'car-card__price-full'; priceFull.textContent = car.full_price || 'POA'; priceDiv.appendChild(priceFull); const priceMonthly = document.createElement('span'); priceMonthly.className = 'car-card__price-monthly'; priceMonthly.textContent = car.monthly_price ? `From ${car.monthly_price} p/m` : ''; priceDiv.appendChild(priceMonthly); contentDiv.appendChild(priceDiv);
+            const buttonsDiv = document.createElement('div'); buttonsDiv.className = 'car-card__buttons'; const financeLink = document.createElement('a'); financeLink.href = `/finance?item=${encodeURIComponent(itemNumber)}`; financeLink.className = 'car-card__button car-card__button--finance'; financeLink.textContent = 'Finance'; buttonsDiv.appendChild(financeLink); const detailsLink = document.createElement('a'); detailsLink.href = detailsUrl; detailsLink.className = 'car-card__button car-card__button--details'; detailsLink.textContent = 'More Details'; buttonsDiv.appendChild(detailsLink); contentDiv.appendChild(buttonsDiv);
+            card.appendChild(imageLink); card.appendChild(contentDiv); return card;
+         }
+
+        // --- Filter Population Function (for Quick Search) ---
+        function populateQuickSearchMakeFilter(cars) {
+            if (!quickSearchMakeSelect) return;
+            const makeCounts = cars.reduce((acc, car) => { if (car.brand) { acc[car.brand] = (acc[car.brand] || 0) + 1; } return acc; }, {});
+            const sortedMakes = Object.keys(makeCounts).sort();
+            quickSearchMakeSelect.innerHTML = '<option value="">Any Make</option>';
+            sortedMakes.forEach(make => { const option = document.createElement('option'); option.value = make; option.textContent = `${make} (${makeCounts[make]})`; quickSearchMakeSelect.appendChild(option); });
+        }
+
+         // --- Display Featured Stock ---
+         function displayFeaturedStock(cars) {
+            if (!featuredStockGrid) return;
+            featuredStockGrid.innerHTML = ''; // Clear loading
+            const featuredCars = cars.slice(0, 3);
+            if (featuredCars.length === 0) { featuredStockGrid.innerHTML = '<p class="grid-message">No featured cars available currently.</p>'; return; }
+            featuredCars.forEach(car => { const cardElement = createCarCard(car); featuredStockGrid.appendChild(cardElement); });
+         }
+
+        // --- Initial Data Load ---
+        fetch('cars.json')
+            .then(response => { if (!response.ok) { throw new Error(`HTTP error! Status: ${response.status}`); } return response.json(); })
+            .then(carsData => {
+                 if (!Array.isArray(carsData)) { throw new Error("Invalid data format: Expected an array."); }
+                allCarsData = carsData.filter(car => typeof car === 'object' && car !== null && car.item_number && car.brand && car.model);
+                if (allCarsData.length === 0) { console.warn("No valid car data found in cars.json"); if(featuredStockGrid) featuredStockGrid.innerHTML = '<p class="grid-message">No car data found.</p>'; return; }
+                if(quickSearchMakeSelect) { populateQuickSearchMakeFilter(allCarsData); }
+                if(featuredStockGrid) { displayFeaturedStock(allCarsData); }
+            })
+            .catch(error => {
+                console.error('Error loading or processing cars.json:', error);
+                if(featuredStockGrid) featuredStockGrid.innerHTML = '<p class="grid-message">Could not load car data.</p>';
+            });
+
+        // --- Image Hover Effect for Featured Stock ---
+        if (featuredStockGrid) {
+            featuredStockGrid.addEventListener('mouseenter', (event) => { if (event.target.matches('.car-card__image img')) { const img = event.target; const img2 = img.dataset.img2; if (img2 && img.src !== img2) { img.src = img2; } } }, true);
+            featuredStockGrid.addEventListener('mouseleave', (event) => { if (event.target.matches('.car-card__image img')) { const img = event.target; const img1 = img.dataset.img1; if (img1 && img.src !== img1) { img.src = img1; } } }, true);
+        }
+
+        // --- Sidebar Toggle Logic ---
+        const body = document.body; const mobileMenuToggle = document.getElementById('mobile-menu-toggle'); const sidebar = document.getElementById('sidebar-nav'); const sidebarCloseBtn = document.getElementById('sidebar-close');
+        const openSidebar = () => { if (!sidebar || !mobileMenuToggle) return; sidebar.classList.add('open'); sidebar.setAttribute('aria-hidden', 'false'); mobileMenuToggle.setAttribute('aria-expanded', 'true'); body.classList.add('sidebar-open'); if (navigator.vibrate) { navigator.vibrate(50); } };
+        const closeSidebar = () => { if (!sidebar || !mobileMenuToggle) return; sidebar.classList.remove('open'); sidebar.setAttribute('aria-hidden', 'true'); mobileMenuToggle.setAttribute('aria-expanded', 'false'); body.classList.remove('sidebar-open'); };
+        if (mobileMenuToggle && sidebar && sidebarCloseBtn) { mobileMenuToggle.addEventListener('click', openSidebar); sidebarCloseBtn.addEventListener('click', closeSidebar); document.addEventListener('click', (event) => { if (sidebar.classList.contains('open') && !sidebar.contains(event.target) && !mobileMenuToggle.contains(event.target)) { closeSidebar(); } }); document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && sidebar.classList.contains('open')) { closeSidebar(); } }); }
+
+        // --- Header Shrink ---
+        const header = document.getElementById('Header_');
+        if (header) { window.addEventListener('scroll', () => { const isShrunk = window.scrollY > 50; header.classList.toggle('shrink', isShrunk); document.body.classList.toggle('header-shrunk', isShrunk); }); }
+
+        // --- Footer Form ---
+        const footerForm = document.getElementById('footer-contact-form');
+        if(footerForm) { footerForm.addEventListener('submit', (event) => { /* Add validation/AJAX */ }); }
+
+    }); // End DOMContentLoaded
+
+     // --- Function for "Get Directions" Form ---
+     function handleDirectionsSubmit(event) {
+        event.preventDefault();
+        const postcode = event.target.postcode.value;
+        if (postcode) {
+            const destination = encodeURIComponent('Leama Specialist Cars, Brookdale Centre, Manchester Road, Knutsford, Cheshire, WA16 0SR');
+            const origin = encodeURIComponent(postcode);
+            const googleMapsUrl = `https://www.google.com/maps/dir/?api=1&origin=${origin}&destination=${destination}`;
+            window.open(googleMapsUrl, '_blank');
+        } else { alert('Please enter your postcode.'); }
+    }
+  </script>
+
+</body>
+</html>

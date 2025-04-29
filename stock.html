@@ -1,0 +1,860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Our Stock - Leama Specialist Cars</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sree+Krushnadevaraya&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <style>
+    /* --- Basic Reset & Variables --- */
+    :root {
+      --bg: #0d0d0d;
+      --fg: #fff;
+      --fg-muted: #ccc;
+      --accent: #D22; /* Red accent */
+      --gap: 1rem;
+      --radius: 4px;
+      --max-w: 1200px;
+      --header-h: 100px;
+      --footer-bg: #1a1a1a;
+      --footer-text: #eee;
+      --form-input-bg: rgba(255,255,255,0.1);
+      --form-input-border: #555;
+      --sidebar-width: 280px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Sree Krushnadevaraya", serif;
+      line-height: 1.5;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+    body.sidebar-open { overflow: hidden; }
+    img { display: block; max-width: 100%; height: auto; }
+    .container { width: 90%; max-width: var(--max-w); margin: 0 auto; }
+    .icon { display: inline-block; width: 1.1em; height: 1.1em; vertical-align: -0.15em; margin-right: 0.5em; }
+    .icon-sm { width: 1em; height: 1em; }
+
+    /* --- Header (Sticky) --- */
+    header#Header_ {
+      position: sticky; top: 0;
+      height: var(--header-h); background: var(--bg); border-bottom: 1px solid #222;
+      z-index: 1000; transition: height 0.3s ease;
+    }
+    header#Header_.shrink { height: 60px; }
+    .header__inner { display: flex; align-items: center; justify-content: space-between; height: 100%; padding: 0 1rem; }
+    .header__left { display: flex; align-items: center; gap: 0.8rem; }
+    .header__logo img { height: 82px; transition: height 0.3s ease; }
+    header#Header_.shrink .header__logo img { height: 50px; }
+    .header__nav { display: none; }
+    .header__nav ul { display: flex; gap: 1.5rem; list-style: none; }
+    .header__nav a { color: var(--fg); text-decoration: none; text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em; transition: color 0.2s ease; }
+    .header__nav a:hover { color: var(--accent); }
+    .header__nav a.active { color: var(--accent); font-weight: bold; }
+    .header__info { display: flex; align-items: center; gap: 0.8rem; }
+    .header__phone { font-size: 1rem; font-weight: 500; color: var(--fg); text-decoration: none; }
+    .phone-icon-link { display: none; }
+    .phone-icon { width: 28px; height: 28px; filter: invert(1); }
+    .mobile-menu-btn { display: none; background: none; border: none; padding: 0.5rem; cursor: pointer; z-index: 1001; order: -1; }
+    .mobile-menu-btn img { width: 30px; height: 30px; filter: invert(1); }
+
+    /* --- Sidebar Navigation --- */
+    .sidebar-nav {
+        position: fixed; top: 0; left: -100%; width: var(--sidebar-width); height: 100%;
+        background-color: #111; box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        padding: calc(var(--header-h) + 1rem) 1.5rem 2rem; z-index: 1500;
+        transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); overflow-y: auto;
+        display: flex; flex-direction: column;
+    }
+    .sidebar-nav.open { left: 0; }
+    .sidebar-nav__close-btn { position: absolute; top: 1rem; right: 1rem; background: none; border: none; color: var(--fg-muted); font-size: 2rem; line-height: 1; padding: 0.5rem; cursor: pointer; transition: color 0.2s ease; }
+    .sidebar-nav__close-btn:hover { color: var(--accent); }
+    .sidebar-nav ul { list-style: none; margin-top: 1rem; flex-grow: 1; }
+    .sidebar-nav li { margin-bottom: 1rem; }
+    .sidebar-nav a { color: var(--fg); text-decoration: none; font-size: 1.1rem; text-transform: uppercase; letter-spacing: 0.05em; display: block; padding: 0.5rem 0; transition: color 0.2s ease; }
+    .sidebar-nav a:hover { color: var(--accent); }
+    .sidebar-nav a.active { color: var(--accent); font-weight: bold; }
+    .sidebar-nav__contact { margin-top: auto; padding-top: 1rem; border-top: 1px solid #333; font-size: 0.9rem; }
+    .sidebar-nav__contact a { font-size: 0.9rem; text-transform: none; letter-spacing: normal; padding: 0.2rem 0; }
+
+    /* --- Filter Section Styles (Responsive) --- */
+    .filter-section {
+        background-color: #1a1a1a;
+        padding: 1.5rem 0;
+        border-bottom: 1px solid #333;
+        margin-bottom: 2rem;
+    }
+    .filter-controls {
+        display: flex;
+        flex-wrap: wrap; /* Allow items to wrap onto next line */
+        gap: 1rem;
+        align-items: flex-end; /* Align items along the bottom edge */
+    }
+    .filter-group {
+        flex: 1 1 200px; /* Allow groups to grow and shrink, base width 200px */
+        min-width: 150px; /* Minimum width before wrapping */
+    }
+    .filter-group label {
+        display: block;
+        font-size: 0.85rem;
+        color: var(--fg-muted);
+        margin-bottom: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .filter-select, .form-control[data-search="prices"] {
+        width: 100%;
+        padding: 0.7rem 1rem;
+        background-color: var(--form-input-bg);
+        border: 1px solid var(--form-input-border);
+        color: var(--fg);
+        border-radius: var(--radius);
+        font-family: inherit;
+        font-size: 0.9rem;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23cccccc' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 0.7rem center;
+        background-size: 1em;
+        padding-right: 2.5rem;
+        line-height: 1.5;
+        min-height: calc(0.7rem * 2 + 1em + 2px);
+    }
+     .filter-select option, .form-control[data-search="prices"] option {
+         background-color: #333;
+         color: var(--fg);
+     }
+
+    .filter-buttons {
+        display: flex;
+        gap: 0.8rem;
+        flex-basis: auto; /* Don't grow like selects */
+        /* margin-left: auto; */ /* Removed to allow natural wrapping */
+        flex-wrap: wrap; /* Allow buttons to wrap if needed */
+        align-self: flex-end; /* Align buttons container to bottom */
+    }
+    .filter-buttons button {
+        padding: 0.7rem 1.5rem;
+        border-radius: var(--radius);
+        cursor: pointer;
+        text-decoration: none;
+        font-family: inherit;
+        font-size: 0.9rem;
+        font-weight: 500;
+        border: none;
+        transition: background-color 0.2s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+        height: calc(0.7rem * 2 + 1em + 2px);
+        line-height: 1.5;
+        flex-shrink: 0; /* Prevent buttons from shrinking too much */
+    }
+    .filter-btn--reset { background-color: #555; color: #fff; }
+    .filter-btn--reset:hover { background-color: #777; }
+    .filter-btn--search { background-color: var(--accent); color: #fff; }
+    .filter-btn--search:hover { background-color: #a00; }
+
+    /* Media query for smaller screens to stack filters */
+    @media (max-width: 767px) {
+        .filter-controls {
+            /* Controls already wrap due to flex-wrap */
+        }
+        .filter-buttons {
+            width: 100%; /* Make button container full width */
+            justify-content: flex-end; /* Align buttons to the right */
+            margin-top: 0.5rem; /* Add some space when buttons wrap */
+        }
+    }
+     @media (max-width: 480px) {
+        .filter-buttons {
+             justify-content: stretch; /* Make buttons full width */
+        }
+        .filter-buttons button {
+            flex-grow: 1; /* Allow buttons to grow */
+        }
+     }
+
+
+    /* --- Car Grid Styles --- */
+    .stock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: var(--gap); padding-bottom: 3rem; min-height: 300px; }
+    .grid-message { grid-column: 1 / -1; text-align: center; color: var(--fg-muted); padding: 2rem; font-size: 1.1rem; }
+    .car-card { background-color: #181818; border: 1px solid #282828; border-radius: var(--radius); overflow: hidden; display: flex; flex-direction: column; transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    .car-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+
+    .car-card__image { position: relative; height: 220px; overflow: hidden; background-color: #222; cursor: pointer; }
+    .car-card__image img { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease; display: block; }
+    .car-card__image-count { position: absolute; top: 0.8rem; left: 0.8rem; background-color: var(--accent); color: white; padding: 0.3rem 0.7rem; border-radius: var(--radius); font-size: 0.9rem; font-weight: bold; z-index: 2; display: flex; align-items: center; gap: 0.4em; opacity: 0.9; pointer-events: none; }
+    .car-card__image-count .fa-image { font-size: 1em; }
+
+    .car-card__content { padding: 1rem; flex-grow: 1; display: flex; flex-direction: column; }
+    .car-card__title { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.2rem; line-height: 1.3; color: var(--fg); text-transform: uppercase; }
+    .car-card__model { font-size: 0.95rem; color: var(--fg-muted); margin-bottom: 1rem; }
+    .car-card__price { margin-top: auto; padding-top: 1rem; border-top: 1px solid #282828; display: flex; justify-content: space-between; align-items: flex-end; gap: 0.5rem; flex-wrap: wrap; }
+    .car-card__price-full { font-size: 1.2rem; font-weight: 600; color: var(--accent); line-height: 1; }
+    .car-card__price-monthly { font-size: 0.8rem; color: var(--fg-muted); text-align: right; line-height: 1; }
+    .car-card__buttons { margin-top: 1rem; display: flex; gap: 0.8rem; }
+    .car-card__button { flex: 1; display: inline-block; padding: 0.6rem 1rem; border-radius: var(--radius); cursor: pointer; text-decoration: none; font-family: inherit; font-size: 0.85rem; font-weight: 500; border: none; transition: background-color 0.2s ease, color 0.2s ease; text-transform: uppercase; letter-spacing: 0.03em; text-align: center; }
+    .car-card__button--finance { background: var(--accent); color: #fff; }
+    .car-card__button--finance:hover { background: #a00; }
+    .car-card__button--details { background: #333; color: var(--fg-muted); border: 1px solid #444; }
+    .car-card__button--details:hover { background: #444; color: #fff; }
+
+    /* --- Footer Styles --- */
+    #Footer { padding: 3rem 0; background-color: var(--footer-bg); color: var(--footer-text); background-image: url('https://www.leama.co.uk/dist/img/hero/hero-3-1920.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat; position: relative; }
+    #Footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); z-index: 1; }
+    #Footer .container { position: relative; z-index: 2; max-width: 1140px; }
+    #Footer a { color: var(--footer-text); text-decoration: none; transition: color 0.2s ease; }
+    #Footer a:hover { color: var(--accent); }
+    #Footer h3, #Footer h4 { font-weight: 600; margin-bottom: 1.2rem; font-size: 1.3rem; }
+    #Footer p, #Footer td, #Footer small, #Footer span { font-size: 0.95rem; }
+    #Footer .contact-block p, #Footer .director-block p { margin-bottom: 0.7rem; line-height: 1.6; display: flex; align-items: center; }
+    #Footer .contact-block i, #Footer .director-block i, #Footer .contact-block img.icon, #Footer .director-block img.icon { margin-right: 0.7em; width: 1.2em; height: 1.2em; text-align: center; flex-shrink: 0; filter: invert(90%) sepia(0%) saturate(7479%) hue-rotate(186deg) brightness(110%) contrast(95%); }
+    #Footer .contact-block a:hover img.icon, #Footer .director-block a:hover img.icon, #Footer .contact-block a:hover i, #Footer .director-block a:hover i { filter: invert(27%) sepia(99%) saturate(3110%) hue-rotate(346deg) brightness(90%) contrast(111%); }
+    #Footer .contact-block .address-link span { padding-left: calc(1.2em + 0.7em); display: block; margin-top: -0.3em; }
+    #Footer .Hours { border: none; color: var(--footer-text); width: 100%; margin-top: 1rem; }
+    #Footer .Hours td { border-top: 1px solid #444; padding: 0.6rem 0; }
+    #Footer .Hours tr:first-child td { border-top: none; }
+    #Footer .Hours span { display: inline-block; min-width: 110px; }
+    #Footer .social-icons { margin-top: 1rem; display: flex; gap: 0.7rem; align-items: center; }
+    #Footer .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; line-height: 38px; text-align: center; border-radius: 50%; color: #fff; transition: opacity 0.2s ease; background-color: rgba(255, 255, 255, 0.1); }
+    #Footer .social-icons a:hover { opacity: 0.8; }
+    #Footer .social-icons img.icon { width: 20px; height: 20px; margin-right: 0; filter: invert(1); }
+    #Footer .social-icons a[href*="linkedin.com"] img.icon { filter: none; }
+    #Footer .footer-form { background: rgba(0,0,0,0.4); padding: 2rem; border-radius: var(--radius); }
+    #Footer .footer-form h4 { text-align: center; margin-bottom: 1.5rem; }
+    #Footer .form-group { margin-bottom: 1.2rem; }
+    #Footer .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    #Footer .form-control { background-color: var(--form-input-bg); border: 1px solid var(--form-input-border); color: var(--fg); padding: 0.8rem 1rem; border-radius: var(--radius); width: 100%; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    #Footer .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(221, 34, 34, 0.3); }
+    #Footer textarea.form-control { resize: vertical; min-height: 100px; }
+    #Footer .required-asterisk { color: var(--accent); font-style: normal; margin-left: 0.2em; }
+    #Footer .footer-form-submit { text-align: right; margin-top: 1.5rem; }
+    #Footer .btn-submit { background-color: var(--accent); color: #fff; border: none; padding: 0.8rem 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: var(--radius); cursor: pointer; transition: background-color 0.2s ease; }
+    #Footer .btn-submit:hover:not(:disabled) { background-color: #a00; }
+    #Footer .btn-submit:disabled { background-color: #555; cursor: not-allowed; }
+    #Footer .row { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+    #Footer [class*="col-"] { padding-left: 15px; padding-right: 15px; width: 100%; }
+    @media (min-width: 768px) { #Footer .col-sm-6 { flex: 0 0 50%; max-width: 50%; } #Footer .col-sm-12 { flex: 0 0 100%; max-width: 100%; } }
+    @media (min-width: 992px) { #Footer .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; } #Footer .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; } }
+    #Footer hr { border: 0; border-top: 1px solid #444; margin: 1.5rem 0; }
+
+    /* --- Responsive Adjustments --- */
+    @media (min-width: 1300px) { .header__nav { display: block; } .mobile-menu-btn { display: none; } .header__left { gap: 0; } }
+    @media (max-width: 1299.98px) { .header__nav { display: none; } .mobile-menu-btn { display: inline-flex; } .header__inner { justify-content: space-between; } }
+    /* Media query for stacking filters already included above */
+    @media (max-width: 767px) {
+        .stock-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        .car-card__image { height: 200px; }
+        #Footer .footer-form { padding: 1.5rem; }
+    }
+    @media (max-width: 570px) {
+        :root { --header-h: 80px; --sidebar-width: 250px; }
+        header#Header_.shrink { height: 50px; }
+        .header__phone { display: none; } .phone-icon-link { display: block; }
+        .header__logo img { height: 50px; } header#Header_.shrink .header__logo img { height: 40px; }
+        .filter-section { padding: 1rem 0; }
+        .stock-grid { grid-template-columns: 1fr; }
+        .car-card__image { height: 240px; }
+    }
+
+  </style>
+</head>
+
+<body>
+  <header id="Header_">
+    <div class="header__inner container">
+      <div class="header__left">
+          <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
+              <img src="/assets/menu.png" alt="Menu">
+          </button>
+          <a href="/" class="header__logo">
+            <img src="https://www.leama.co.uk/dist/img/logo.png" alt="Leama Specialist Cars">
+          </a>
+      </div>
+      <nav class="header__nav"> <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="stock.html" class="active">Our Stock</a></li>
+          <li><a href="/previously-sold">Previously Sold</a></li>
+          <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+          <li><a href="/finance">Finance</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/contact-us">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header__info">
+        <a href="tel:01565832900" class="header__phone">01565 832900</a>
+        <a href="tel:01565832900" class="phone-icon-link" aria-label="Call Us">
+            <img src="/assets/phone.png" alt="Call" class="phone-icon">
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <nav class="sidebar-nav" id="sidebar-nav" aria-hidden="true">
+      <button class="sidebar-nav__close-btn" id="sidebar-close" aria-label="Close menu">×</button>
+      <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="stock.html" class="active">Our Stock</a></li>
+          <li><a href="/previously-sold">Previously Sold</a></li>
+          <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+          <li><a href="/finance">Finance</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/contact-us">Contact</a></li>
+      </ul>
+      <div class="sidebar-nav__contact">
+          <a href="tel:01565832900">
+              <img src="/assets/phone.png" alt="" class="icon icon-sm"> 01565 832900
+          </a>
+      </div>
+  </nav>
+
+  <main>
+    <section class="filter-section">
+        <div class="container">
+            <form class="filter-controls" id="filter-form" action="#" method="GET" onsubmit="return false;">
+                <div class="filter-group">
+                    <label for="filter-make">Make</label>
+                    <select id="filter-make" name="make" class="filter-select">
+                        <option value="">Any Make</option>
+                        </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-model">Model</label>
+                    <select id="filter-model" name="model" class="filter-select" disabled> <option value="">Any Model</option>
+                        </select>
+                </div>
+                <div class="filter-group">
+                    <label for="filter-budget">Price</label>
+                    <select id="filter-budget" name="priceMax" class="form-control" data-search="prices" data-search-criteria="priceMax" data-search-pre="Up to £" data-search-round="5000">
+                        <option class="any" value="">Any Price</option>
+                        <option name="15000" class="opt" value="15000">Up to £ 15,000 </option>
+                        <option name="20000" class="opt" value="20000">Up to £ 20,000 </option>
+                        <option name="25000" class="opt" value="25000">Up to £ 25,000 </option>
+                        <option name="30000" class="opt" value="30000">Up to £ 30,000 </option>
+                        <option name="35000" class="opt" value="35000">Up to £ 35,000 </option>
+                        <option name="50000" class="opt" value="50000">Up to £ 50,000 </option>
+                        <option name="55000" class="opt" value="55000">Up to £ 55,000 </option>
+                        <option name="60000" class="opt" value="60000">Up to £ 60,000 </option>
+                        <option name="70000" class="opt" value="70000">Up to £ 70,000 </option>
+                        <option name="85000" class="opt" value="85000">Up to £ 85,000 </option>
+                        <option name="90000" class="opt" value="90000">Up to £ 90,000 </option>
+                        <option name="100000" class="opt" value="100000">Up to £ 100,000 </option>
+                        <option name="160000" class="opt" value="160000">Up to £ 160,000 </option>
+                        <option name="245000" class="opt" value="245000">Up to £ 245,000 </option>
+                        <option name="300000" class="opt" value="300000">Up to £ 300,000 </option>
+                        <option name="500000" class="opt" value="500000">Up to £ 500,000 </option>
+                    </select>
+                </div>
+                <div class="filter-buttons">
+                    <button type="reset" id="reset-filters" class="filter-btn--reset">Reset</button>
+                    <button type="button" id="search-button" class="filter-btn--search">Search <span id="car-count-display">(0)</span></button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="stock-grid-section">
+        <div class="container">
+            <div class="stock-grid" id="stock-grid">
+                 <p class="grid-message">Loading cars...</p>
+            </div>
+        </div>
+    </section>
+  </main>
+
+  <footer id="Footer" class="section background text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-3 contact-block">
+                <h4 class="h3 text-white mb-3">Contact & Hours</h4>
+                <p><a href="#" target="_blank" rel="noopener" class="address-link"><i class="fas fa-map-marker-alt text-accent icon"></i> <span>Brookdale Centre,</span> <span>Manchester Road,</span> <span>Knutsford, Cheshire, WA16 0SR</span></a></p>
+                <p><a href="tel:01565832900"><img src="/assets/phone.png" alt="" class="icon">Office: 01565 832900</a></p>
+                <table class="Hours table"><tbody><tr><td class="px-0"><span>Monday - Friday</span></td><td class="px-0 text-right">08:30 - 17:30</td></tr><tr><td class="px-0"><span>Saturday - Sunday</span></td><td class="px-0 text-right"><small>By Appointment</small></td></tr></tbody></table>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-3 director-block">
+                <h4 class="h3 text-white mb-3">Directors</h4>
+                <p><i class="fas fa-user text-accent icon"></i><strong>Mark Platts</strong></p> <p><a href="tel:07976914729"><img src="/assets/phone.png" alt="" class="icon">07976 914729</a></p> <p><a href="mailto:mark@leama.co.uk"><i class="fas fa-at text-accent icon"></i>mark@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447976914729" aria-label="WhatsApp Mark"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr>
+                <p><i class="fas fa-user text-accent icon"></i><strong>Jonathan Travis</strong></p> <p><a href="tel:07711840456"><img src="/assets/phone.png" alt="" class="icon">07711 840456</a></p> <p><a href="mailto:jonathan@leama.co.uk"><i class="fas fa-at text-accent icon"></i>jonathan@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447711840456" aria-label="WhatsApp Jonathan"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr>
+                <h4 class="h3 text-white mb-2 pt-3">Connect With Us</h4>
+                <div class="social-icons" itemscope itemtype="http://schema.org/Organization"><meta itemprop="url" content="https://www.leama.co.uk"><a target="_blank" rel="noopener" itemprop="sameAs" href="https://ca.linkedin.com/company/leamaspecialistcars" aria-label="LinkedIn"><img src="/assets/Linkedin.png" alt="LinkedIn" class="icon"></a> <a target="_blank" rel="noopener" itemprop="sameAs" href="https://www.instagram.com/leamacars/" aria-label="Instagram"><img src="/assets/instagram.png" alt="Instagram" class="icon"></a></div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <form class="footer-form" id="footer-contact-form" action="/path-to-your-submit-script" method="post" novalidate>
+                    <h4 class="h3 text-white mb-3">Get In Touch</h4>
+                    <input hidden name="form_subject" value="Stock Page Footer Enquiry">
+                    <div class="form-group"><label class="form-label" for="footer_name">Name <i class="required-asterisk">*</i></label><input name="customer_name" type="text" class="form-control" id="footer_name" required placeholder="Your Full Name"></div>
+                    <div class="form-group"><label class="form-label" for="footer_email">Email <i class="required-asterisk">*</i></label><input name="customer_email" type="email" class="form-control" id="footer_email" required placeholder="your.email@example.com"></div>
+                    <div class="form-group"><label class="form-label" for="footer_phone">Phone No. <i class="required-asterisk">*</i></label><input name="customer_phone" type="tel" class="form-control" id="footer_phone" required placeholder="Your Contact Number"></div>
+                    <div class="form-group"><label class="form-label" for="footer_message">Message <i class="required-asterisk">*</i></label><textarea class="form-control" name="customer_message" rows="4" id="footer_message" required placeholder="How can we help?"></textarea></div>
+                    <div class="footer-form-submit"><button id="footerSendBtn" type="submit" class="btn-submit">Send Message</button></div>
+                </form>
+            </div>
+        </div>
+    </div>
+  </footer>
+
+  <script>
+    'use strict';
+
+    // --- Helper Function to Parse Query Parameters ---
+    function getQueryParams() {
+        const params = new URLSearchParams(window.location.search);
+        return {
+            make: params.get('make') || '',
+            priceMax: params.get('priceMax') || ''
+        };
+    }
+
+    // --- Main DOMContentLoaded Listener ---
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- DOM Elements ---
+        const stockGrid = document.getElementById('stock-grid');
+        const carCountSpan = document.getElementById('car-count-display');
+        const makeSelect = document.getElementById('filter-make');
+        const modelSelect = document.getElementById('filter-model');
+        const budgetSelect = document.getElementById('filter-budget');
+        const searchButton = document.getElementById('search-button');
+        const resetButton = document.getElementById('reset-filters');
+        const filterForm = document.getElementById('filter-form');
+
+        const advertsDir = 'adverts';
+        const defaultImageUrl = '/assets/placeholder-car.png';
+        let allCarsData = []; // Store the original car data
+
+        // --- Helper Functions ---
+
+        // Function to safely parse price string (e.g., "£245,000") into a number
+        function parsePrice(priceString) {
+            if (typeof priceString !== 'string') return null;
+            try {
+                // Remove currency symbols, commas, and whitespace
+                const cleanedString = priceString.replace(/[£,]/g, '').trim();
+                const price = parseFloat(cleanedString);
+                return isNaN(price) ? null : price;
+            } catch (e) {
+                console.error("Error parsing price:", priceString, e);
+                return null;
+            }
+        }
+
+        // Function to create a single car card HTML element
+        function createCarCard(car) {
+            const itemNumber = car.item_number || 'UNKNOWN';
+            // Sanitize item number for URL/filename safety
+            const safeItemNumber = String(itemNumber).replace(/[^a-zA-Z0-9_-]/g, '');
+            const detailsUrl = `${advertsDir}/car_${safeItemNumber}.html`;
+
+            const images = Array.isArray(car.images) ? car.images : [];
+            const img1 = images.length > 0 ? images[0] : defaultImageUrl;
+            const img2 = images.length > 1 ? images[1] : null;
+            const imageCount = images.length;
+
+            const card = document.createElement('div');
+            card.className = 'car-card';
+
+            const imageLink = document.createElement('a');
+            imageLink.href = detailsUrl;
+            imageLink.className = 'car-card__image';
+            imageLink.setAttribute('aria-label', `View details for ${car.brand || ''} ${car.model || ''}`);
+
+            // Add image count badge if more than 0 images
+            if (imageCount > 0) {
+                const countDiv = document.createElement('div');
+                countDiv.className = 'car-card__image-count';
+                countDiv.textContent = imageCount + ' ';
+                const icon = document.createElement('i');
+                icon.className = 'fas fa-image'; // Font Awesome icon
+                countDiv.appendChild(icon);
+                imageLink.appendChild(countDiv);
+            }
+
+            const imgElem = document.createElement('img');
+            imgElem.src = img1;
+            imgElem.alt = `${car.brand || 'Vehicle'} ${car.model || ''}`; // More descriptive alt text
+            imgElem.loading = 'lazy'; // Lazy load images
+            imgElem.dataset.img1 = img1;
+            if (img2) { imgElem.dataset.img2 = img2; }
+            // Set default image on error
+            imgElem.onerror = () => {
+                console.warn(`Failed to load image: ${img1}. Using default.`);
+                imgElem.src = defaultImageUrl;
+                // Prevent infinite loop if default image also fails
+                imgElem.onerror = null;
+            };
+            imageLink.appendChild(imgElem);
+
+            const contentDiv = document.createElement('div');
+            contentDiv.className = 'car-card__content';
+
+            const title = document.createElement('h3');
+            title.className = 'car-card__title';
+            title.textContent = car.brand || 'Unknown Brand';
+            contentDiv.appendChild(title);
+
+            const modelP = document.createElement('p');
+            modelP.className = 'car-card__model';
+            modelP.textContent = car.model || 'Unknown Model';
+            contentDiv.appendChild(modelP);
+
+            // Price section
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'car-card__price';
+            const priceFull = document.createElement('span');
+            priceFull.className = 'car-card__price-full';
+            priceFull.textContent = car.full_price || 'POA'; // Price On Application
+            priceDiv.appendChild(priceFull);
+            if (car.monthly_price) { // Only add monthly if it exists
+                const priceMonthly = document.createElement('span');
+                priceMonthly.className = 'car-card__price-monthly';
+                priceMonthly.textContent = `From ${car.monthly_price} p/m`;
+                priceDiv.appendChild(priceMonthly);
+            }
+            contentDiv.appendChild(priceDiv);
+
+            // Buttons section
+            const buttonsDiv = document.createElement('div');
+            buttonsDiv.className = 'car-card__buttons';
+            const financeLink = document.createElement('a');
+            // Encode item number for URL safety
+            financeLink.href = `/finance?item=${encodeURIComponent(itemNumber)}`;
+            financeLink.className = 'car-card__button car-card__button--finance';
+            financeLink.textContent = 'Finance';
+            buttonsDiv.appendChild(financeLink);
+            const detailsLink = document.createElement('a');
+            detailsLink.href = detailsUrl;
+            detailsLink.className = 'car-card__button car-card__button--details';
+            detailsLink.textContent = 'More Details';
+            buttonsDiv.appendChild(detailsLink);
+            contentDiv.appendChild(buttonsDiv);
+
+            card.appendChild(imageLink);
+            card.appendChild(contentDiv);
+
+            return card;
+        }
+
+        // --- Filter Population Functions ---
+
+        function populateMakeFilter(cars) {
+            // Count occurrences of each make
+            const makeCounts = cars.reduce((acc, car) => {
+                if (car.brand) {
+                    acc[car.brand] = (acc[car.brand] || 0) + 1;
+                }
+                return acc;
+            }, {});
+
+            // Sort makes alphabetically
+            const sortedMakes = Object.keys(makeCounts).sort((a, b) => a.localeCompare(b));
+
+            // Clear existing options (except the first "Any Make")
+            makeSelect.innerHTML = '<option value="">Any Make</option>';
+
+            // Add sorted makes with counts
+            sortedMakes.forEach(make => {
+                const option = document.createElement('option');
+                option.value = make;
+                option.textContent = `${make} (${makeCounts[make]})`;
+                makeSelect.appendChild(option);
+            });
+        }
+
+        function populateModelFilter(cars, selectedMake) {
+            // Clear existing options (except "Any Model")
+            modelSelect.innerHTML = '<option value="">Any Model</option>';
+
+            // Disable and return if no make is selected
+            if (!selectedMake) {
+                modelSelect.disabled = true;
+                return;
+            }
+
+            // Get unique models for the selected make, filter out empty/null models, and sort
+            const models = cars
+                .filter(car => car.brand === selectedMake && car.model) // Ensure model exists
+                .map(car => car.model)
+                .filter((model, index, self) => self.indexOf(model) === index) // Unique models
+                .sort((a, b) => a.localeCompare(b)); // Sort alphabetically
+
+            // Populate dropdown if models found, otherwise keep disabled
+            if (models.length > 0) {
+                models.forEach(model => {
+                    const option = document.createElement('option');
+                    option.value = model;
+                    option.textContent = model;
+                    modelSelect.appendChild(option);
+                });
+                modelSelect.disabled = false;
+            } else {
+                modelSelect.disabled = true;
+            }
+        }
+
+        // --- Filtering and Display Logic ---
+
+        function filterAndDisplayCars() {
+            const selectedMake = makeSelect.value;
+            const selectedModel = modelSelect.value;
+            // Ensure budgetSelect.value is parsed as integer, default to null if empty/invalid
+            const maxPrice = budgetSelect.value ? parseInt(budgetSelect.value, 10) : null;
+            if (isNaN(maxPrice)) { maxPrice = null; } // Handle case where parseInt returns NaN
+
+            const filteredCars = allCarsData.filter(car => {
+                // Make filter: Check if a make is selected and if the car's brand matches
+                if (selectedMake && (!car.brand || car.brand !== selectedMake)) {
+                    return false;
+                }
+                // Model filter: Check if a make AND model are selected, and if the car's model matches
+                if (selectedMake && selectedModel && (!car.model || car.model !== selectedModel)) {
+                    return false;
+                }
+                // Price filter: Check if maxPrice is set
+                if (maxPrice !== null) {
+                    const carPrice = parsePrice(car.full_price);
+                    // If carPrice is null (POA or parse error) or greater than maxPrice, filter out
+                    if (carPrice === null || carPrice > maxPrice) {
+                        return false;
+                    }
+                }
+                // If none of the above conditions returned false, the car passes the filters
+                return true;
+            });
+
+            // Display filtered cars or 'no results' message
+            stockGrid.innerHTML = ''; // Clear current grid
+            if (filteredCars.length === 0) {
+                stockGrid.innerHTML = '<p class="grid-message">No cars match your criteria.</p>';
+            } else {
+                // Use DocumentFragment for potentially better performance with many cards
+                const fragment = document.createDocumentFragment();
+                filteredCars.forEach(car => {
+                    fragment.appendChild(createCarCard(car));
+                });
+                stockGrid.appendChild(fragment);
+            }
+
+            // Update count display on search button
+            carCountSpan.textContent = `(${filteredCars.length})`;
+        }
+
+
+        // --- Initial Load: Fetch Data, Populate Filters, Apply URL Params, Display ---
+        fetch('cars.json')
+            .then(response => {
+                // Check if the response status is OK (200-299)
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                return response.json(); // Parse JSON data
+            })
+            .then(carsData => {
+                // Validate data structure (basic check for array)
+                if (!Array.isArray(carsData)) {
+                     throw new Error("Invalid data format: Expected an array.");
+                }
+
+                // Filter for valid car objects and store globally
+                allCarsData = carsData.filter(car =>
+                    typeof car === 'object' && car !== null &&
+                    car.item_number && car.brand && car.model // Ensure essential fields exist
+                );
+
+                // Handle case where no valid car data is found after filtering
+                if (allCarsData.length === 0) {
+                    stockGrid.innerHTML = '<p class="grid-message">No valid car data found.</p>';
+                     carCountSpan.textContent = '(0)';
+                    // Optionally disable filters if there's no data
+                    makeSelect.disabled = true;
+                    modelSelect.disabled = true;
+                    budgetSelect.disabled = true;
+                    searchButton.disabled = true;
+                    resetButton.disabled = true;
+                    return; // Stop further processing
+                }
+
+                // --- Populate Filters and Apply URL Parameters ---
+                populateMakeFilter(allCarsData); // Populate Make dropdown first
+                populateModelFilter(allCarsData, ''); // Populate Model dropdown initially (disabled)
+
+                // Get URL parameters
+                const { make, priceMax } = getQueryParams();
+
+                // Apply 'make' parameter if present and valid
+                if (make) {
+                   // Check if the make exists in the dropdown options
+                   if (Array.from(makeSelect.options).some(opt => opt.value === make)) {
+                       makeSelect.value = make;
+                       // Repopulate models based on the selected make
+                       populateModelFilter(allCarsData, make);
+                   } else {
+                       console.warn(`Make "${make}" from URL not found in options.`);
+                   }
+                }
+
+                // Apply 'priceMax' parameter if present and valid
+                if (priceMax) {
+                    // Check if the price value exists in the dropdown options
+                    if (Array.from(budgetSelect.options).some(opt => opt.value === priceMax)) {
+                        budgetSelect.value = priceMax;
+                    } else {
+                       console.warn(`Price "${priceMax}" from URL not found in options.`);
+                    }
+                }
+
+                // --- Initial Display ---
+                // Display cars based on applied filters (from URL params) or all cars if no params
+                filterAndDisplayCars();
+
+            })
+            .catch(error => {
+                // Log the error and display a user-friendly message
+                console.error('Error loading or processing cars.json:', error);
+                stockGrid.innerHTML = `<p class="grid-message">Could not load car data: ${error.message}. Please check the console or try again later.</p>`;
+                carCountSpan.textContent = '(0)';
+                // Optionally disable filters on error
+                makeSelect.disabled = true;
+                modelSelect.disabled = true;
+                budgetSelect.disabled = true;
+                searchButton.disabled = true;
+                resetButton.disabled = true;
+            });
+
+        // --- Event Listeners ---
+
+        // Update Model filter when Make changes
+        makeSelect.addEventListener('change', () => {
+            populateModelFilter(allCarsData, makeSelect.value);
+            // Optional: Automatically filter when make changes?
+            // filterAndDisplayCars();
+        });
+
+        // Trigger filtering on Search button click
+        searchButton.addEventListener('click', filterAndDisplayCars);
+
+        // Handle Reset button click
+        resetButton.addEventListener('click', () => {
+            filterForm.reset(); // Reset form fields to default values
+            populateModelFilter(allCarsData, ''); // Reset model dropdown and disable it
+            filterAndDisplayCars(); // Display all cars again
+        });
+
+
+        // --- Image Hover Effect (Using Event Delegation) ---
+        stockGrid.addEventListener('mouseenter', (event) => {
+            // Check if the event target is an image within a car card image container
+            if (event.target.matches('.car-card__image img')) {
+                const img = event.target;
+                const img2 = img.dataset.img2;
+                // If a second image exists and it's not currently displayed, switch to it
+                if (img2 && img.src !== img2) {
+                    img.src = img2;
+                }
+            }
+        }, true); // Use capture phase
+
+        stockGrid.addEventListener('mouseleave', (event) => {
+            // Check if the event target is an image within a car card image container
+            if (event.target.matches('.car-card__image img')) {
+                const img = event.target;
+                const img1 = img.dataset.img1;
+                // If the first image exists and it's not currently displayed, switch back to it
+                if (img1 && img.src !== img1) {
+                    img.src = img1;
+                }
+            }
+        }, true); // Use capture phase
+
+        // --- Sidebar Toggle Logic ---
+        const body = document.body;
+        const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+        const sidebar = document.getElementById('sidebar-nav');
+        const sidebarCloseBtn = document.getElementById('sidebar-close');
+
+        // Function to open the sidebar
+         const openSidebar = () => {
+             // Check if elements exist before manipulating them
+             if (!sidebar || !mobileMenuToggle) return;
+             sidebar.classList.add('open');
+             sidebar.setAttribute('aria-hidden', 'false');
+             mobileMenuToggle.setAttribute('aria-expanded', 'true');
+             body.classList.add('sidebar-open'); // Prevent background scroll
+             // Optional: Vibrate on open (for mobile devices)
+             if (navigator.vibrate) { navigator.vibrate(50); }
+         };
+
+         // Function to close the sidebar
+         const closeSidebar = () => {
+             if (!sidebar || !mobileMenuToggle) return;
+             sidebar.classList.remove('open');
+             sidebar.setAttribute('aria-hidden', 'true');
+             mobileMenuToggle.setAttribute('aria-expanded', 'false');
+             body.classList.remove('sidebar-open'); // Allow background scroll
+         };
+
+         // Add event listeners only if all elements exist
+         if (mobileMenuToggle && sidebar && sidebarCloseBtn) {
+             mobileMenuToggle.addEventListener('click', openSidebar);
+             sidebarCloseBtn.addEventListener('click', closeSidebar);
+
+             // Close sidebar if clicking outside of it
+             document.addEventListener('click', (event) => {
+                 if (sidebar.classList.contains('open') &&
+                     !sidebar.contains(event.target) && // Click was not inside sidebar
+                     !mobileMenuToggle.contains(event.target)) { // Click was not the toggle button
+                     closeSidebar();
+                 }
+             });
+
+             // Close sidebar on Escape key press
+             document.addEventListener('keydown', (e) => {
+                 if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                     closeSidebar();
+                 }
+             });
+         } else {
+            console.warn("Sidebar elements not found, toggle functionality disabled.");
+         }
+
+        // --- Header Shrink on Scroll ---
+        const header = document.getElementById('Header_');
+        if (header) {
+            // Use a threshold for shrinking
+            const shrinkThreshold = 50; // Pixels scrolled down
+            window.addEventListener('scroll', () => {
+                // Add 'shrink' class if scrolled past threshold, remove otherwise
+                header.classList.toggle('shrink', window.scrollY > shrinkThreshold);
+            }, { passive: true }); // Improve scroll performance
+        } else {
+            console.warn("Header element not found, shrink functionality disabled.");
+        }
+
+        // --- Footer Form Placeholder ---
+        const footerForm = document.getElementById('footer-contact-form');
+        if(footerForm) {
+            footerForm.addEventListener('submit', (event) => {
+                // Prevent default form submission for now
+                event.preventDefault();
+                console.log('Footer form submitted (implement AJAX/validation).');
+                // Example: Add validation checks here
+                // Example: Gather form data: new FormData(footerForm)
+                // Example: Use fetch() to send data to the server
+            });
+        } else {
+             console.warn("Footer contact form not found.");
+        }
+
+    }); // End DOMContentLoaded
+  </script>
+
+</body>
+</html>
