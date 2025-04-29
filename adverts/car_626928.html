@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Leama Specialist Cars – Mercedes CLA 180 AMG LINE PREMIUM</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sree+Krushnadevaraya&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+
+  <style>
+    /* --- Basic Reset & Variables --- */
+    :root {
+      --bg: #0d0d0d;
+      --fg: #fff;
+      --fg-muted: #ccc;
+      --accent: #D22;
+      --gap: 1rem;
+      --radius: 4px;
+      --max-w: 1200px;
+      --header-h: 100px;
+      --btn-offset: 2rem;
+      --footer-bg: #1a1a1a;
+      --footer-text: #eee;
+      --form-bg: rgba(0,0,0,0.4);
+      --form-input-bg: rgba(255,255,255,0.1);
+      --form-input-border: #555;
+      --sidebar-width: 280px; /* Width of the mobile sidebar */
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: "Sree Krushnadevaraya", serif;
+      line-height: 1.5;
+      font-size: 16px;
+      /* Prevent horizontal scroll caused by sidebar */
+      overflow-x: hidden;
+    }
+    /* Style for when sidebar is open */
+    body.sidebar-open {
+        overflow: hidden; /* Prevent scrolling background */
+    }
+
+    img { display: block; max-width: 100%; height: auto; }
+    .container { width: 90%; max-width: var(--max-w); margin: 0 auto; }
+    .icon { /* Basic icon styling */
+        display: inline-block;
+        width: 1.1em; /* Adjust size as needed */
+        height: 1.1em;
+        vertical-align: -0.15em; /* Align with text */
+        margin-right: 0.5em;
+    }
+    .icon-sm { width: 1em; height: 1em; } /* Smaller icons if needed */
+
+    /* --- Header --- */
+    header#Header_ {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h); background: var(--bg); border-bottom: 1px solid #222;
+      z-index: 1000; transition: height 0.3s ease;
+    }
+    header#Header_.shrink { height: 60px; }
+    .header__inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 100%; padding: 0 1rem;
+    }
+    .header__left { /* Container for mobile menu button and logo */
+        display: flex;
+        align-items: center;
+        gap: 0.8rem; /* Space between button and logo */
+    }
+    .header__logo img { height: 82px; transition: height 0.3s ease; }
+    header#Header_.shrink .header__logo img { height: 50px; }
+    .header__nav { display: none; } /* Hidden by default on smaller screens, shown via media query */
+    .header__nav ul { display: flex; gap: 1.5rem; list-style: none; }
+    .header__nav a {
+      color: var(--fg); text-decoration: none;
+      text-transform: uppercase; font-size: 0.9rem; letter-spacing: 0.04em;
+      transition: color 0.2s ease;
+    }
+    .header__nav a:hover { color: var(--accent); }
+    .header__info { display: flex; align-items: center; gap: 0.8rem; }
+    .header__phone {
+      font-size: 1rem; font-weight: 500; color: var(--fg); text-decoration: none;
+    }
+    .phone-icon-link { /* Wrapper for the phone icon link */
+        display: none; /* Hidden by default, shown via media query */
+    }
+    .phone-icon {
+        width: 28px; height: 28px;
+        filter: invert(1); /* Invert black icon to white */
+    }
+    .mobile-menu-btn { /* Hamburger menu button */
+        display: none; /* Hidden by default */
+        background: none; border: none; padding: 0.5rem; cursor: pointer;
+        z-index: 1001; /* Above header */
+        order: -1; /* Move button visually first in flex container */
+    }
+    .mobile-menu-btn img {
+        width: 30px; height: 30px;
+        filter: invert(1); /* Invert black icon to white */
+    }
+
+    /* --- Sidebar Navigation --- */
+    .sidebar-nav {
+        position: fixed;
+        top: 0;
+        left: -100%; /* Start off-screen (LEFT side now) */
+        width: var(--sidebar-width);
+        height: 100%;
+        background-color: #111; /* Dark background */
+        box-shadow: 5px 0 15px rgba(0,0,0,0.5); /* Shadow on the right */
+        padding: calc(var(--header-h) + 1rem) 1.5rem 2rem; /* Space for header + padding */
+        z-index: 1500; /* Above header, below modal */
+        transition: left 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); /* Smooth transition for LEFT */
+        overflow-y: auto; /* Scroll if content overflows */
+        display: flex;
+        flex-direction: column;
+    }
+    .sidebar-nav.open {
+        left: 0; /* Slide in from LEFT */
+    }
+    .sidebar-nav__close-btn {
+        position: absolute;
+        top: 1rem;
+        right: 1rem; /* Close button still on the right */
+        background: none; border: none;
+        color: var(--fg-muted);
+        font-size: 2rem;
+        line-height: 1;
+        padding: 0.5rem;
+        cursor: pointer;
+        transition: color 0.2s ease;
+    }
+     .sidebar-nav__close-btn:hover { color: var(--accent); }
+    .sidebar-nav ul {
+        list-style: none;
+        margin-top: 1rem;
+        flex-grow: 1; /* Push contact info down */
+    }
+    .sidebar-nav li { margin-bottom: 1rem; }
+    .sidebar-nav a {
+        color: var(--fg);
+        text-decoration: none;
+        font-size: 1.1rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        display: block;
+        padding: 0.5rem 0;
+        transition: color 0.2s ease;
+    }
+    .sidebar-nav a:hover { color: var(--accent); }
+    .sidebar-nav__contact { /* Contact info at the bottom */
+        margin-top: auto; /* Pushes to bottom */
+        padding-top: 1rem;
+        border-top: 1px solid #333;
+        font-size: 0.9rem;
+    }
+     .sidebar-nav__contact a {
+         font-size: 0.9rem;
+         text-transform: none;
+         letter-spacing: normal;
+         padding: 0.2rem 0;
+     }
+
+
+    /* --- Car Summary --- */
+    .car-summary {
+      padding-top: calc(var(--header-h) + 1rem);
+      background: var(--bg); border-bottom: 1px solid #222;
+      padding-bottom: 1rem;
+    }
+    .car-summary__inner {
+      display: flex; flex-wrap: wrap;
+      justify-content: space-between; align-items: flex-end; gap: 1rem;
+    }
+    .car-summary__brand {
+      font-size: 1.8rem; font-weight: 700; text-transform: uppercase; line-height: 1.2;
+    }
+    .car-summary__model {
+      font-size: 1.1rem; opacity: 0.8; margin-top: 0.25rem;
+    }
+    .car-summary__price { text-align: right; }
+    .car-summary__full {
+      display: block; font-size: 1.8rem; font-weight: 600; color: var(--accent);
+    }
+    .car-summary__monthly {
+      display: block; font-size: 0.9rem; color: var(--fg-muted); margin-top: 0.25rem;
+    }
+
+    /* --- Gallery (Horizontal Scroll) --- */
+    .gallery {
+      position: relative; overflow: hidden; padding: 2rem 0; background: var(--bg);
+    }
+    .gallery__viewport {
+      display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+      gap: var(--gap); padding-bottom: 1rem;
+      width: 100%;
+      padding-left: calc((100vw - var(--max-w)) / 2 + var(--gap));
+      padding-right: calc((100vw - var(--max-w)) / 2 + var(--gap));
+      scrollbar-width: thin; scrollbar-color: var(--accent) rgba(0,0,0,0.2);
+    }
+    .gallery__viewport::-webkit-scrollbar { height: 8px; }
+    .gallery__viewport::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); border-radius: 4px;}
+    .gallery__viewport::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+    .gallery__item {
+      flex: 0 0 80vw;
+      scroll-snap-align: center; border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .gallery__item img {
+      width: 100%; height: 100%; object-fit: cover;
+      cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+     .gallery__item img:hover {
+       transform: scale(1.02); box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+     }
+    .gallery__btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0, 0, 0, 0.5); border: none;
+      border-radius: 50%; width: 50px; height: 50px;
+      cursor: pointer; z-index: 10;
+      display: flex; align-items: center; justify-content: center;
+      transition: background-color 0.2s ease;
+    }
+    .gallery__btn:hover { background: rgba(0, 0, 0, 0.8); }
+    .gallery__btn img { width: 24px; height: 24px; }
+    .gallery__btn--prev { left: var(--gap); }
+    .gallery__btn--next { right: var(--gap); }
+    .gallery__btn.hidden { display: none; }
+
+    /* --- CTA Buttons --- */
+    .actions {
+      display: flex; flex-wrap: wrap; gap: 1rem;
+      justify-content: center; padding: 2rem 0;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1.6rem; border-radius: var(--radius);
+      cursor: pointer; text-decoration: none; font-family: inherit;
+      font-size: 0.95rem; font-weight: 500; border: none;
+      transition: all 0.2s ease; text-transform: uppercase; letter-spacing: 0.03em;
+    }
+    .btn img.icon { width: 20px; height: 20px; margin-right: 0.5em; } /* Icon size in buttons */
+
+    .btn--whatsapp { background: #128c7e; color: #fff; }
+    .btn--whatsapp:hover { background: #0e6b5a; }
+    .btn--finance { background: var(--accent); color: #fff; }
+    .btn--finance:hover { background: #a00; }
+    .btn--view-images { background: #353434; color: #fff; }
+    .btn--view-images:hover { background: #555; }
+    .btn--enquire { background: #eee; color: #111; }
+    .btn--enquire:hover { background: #ccc; }
+
+    /* --- Overview --- */
+    .car-overview { background: var(--bg); padding: 2rem 0; }
+    .car-overview__inner {
+      display: grid; grid-template-columns: 1fr; gap: calc(var(--gap) * 2);
+    }
+    .car-overview__text h2 {
+      margin-bottom: 1.5rem; font-size: 1.6rem; text-transform: uppercase;
+      font-weight: 600; letter-spacing: 0.05em; border-bottom: 1px solid #333; padding-bottom: 0.5rem;
+    }
+    .car-overview__text h3 {
+      margin-bottom: 1rem; font-size: 1.1rem; text-transform: uppercase;
+      color: var(--fg-muted); font-weight: 500; letter-spacing: 0.04em;
+    }
+    .car-overview__text p {
+      font-size: 0.95rem; line-height: 1.6; opacity: 0.9; white-space: pre-wrap;
+    }
+    .car-overview__image img {
+        border-radius: var(--radius); max-height: 500px; width: 100%; object-fit: cover;
+    }
+
+    /* --- Specs --- */
+    .car-specs { background: var(--bg); padding: 2rem 0; }
+    .car-specs__inner h2 {
+        margin-bottom: 1.5rem; font-size: 1.6rem; text-transform: uppercase;
+        font-weight: 600; letter-spacing: 0.05em; border-bottom: 1px solid #333; padding-bottom: 0.5rem;
+    }
+    .spec-grid {
+      display: grid; gap: var(--gap) 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+    .spec-grid div {
+        font-size: 0.95rem; line-height: 1.4; border-bottom: 1px solid #222; padding-bottom: 0.5rem;
+    }
+    .spec-grid div strong {
+      font-weight: 600; color: var(--fg-muted); margin-right: 0.5em; display: block;
+      font-size: 0.85rem; text-transform: uppercase; margin-bottom: 0.2rem;
+    }
+    .spec-item-number { display: none; } /* Hide Item Number */
+
+    /* --- Vertical Gallery (All Images) --- */
+    .v-gallery { background: var(--bg); padding: 3rem 0; }
+    .v-gallery__inner h2 {
+        margin-bottom: 1.5rem; font-size: 1.6rem; text-transform: uppercase;
+        font-weight: 600; letter-spacing: 0.05em; border-bottom: 1px solid #333; padding-bottom: 0.5rem;
+    }
+    .v-gallery__grid {
+      display: grid; gap: var(--gap); grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    }
+    .v-gallery__item img {
+      border-radius: var(--radius); cursor: pointer; width: 100%; height: 100%; object-fit: cover;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .v-gallery__item img:hover { transform: scale(1.03); box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+
+    /* --- Start: New Footer Styles --- */
+    #Footer { padding: 3rem 0; background-color: var(--footer-bg); color: var(--footer-text); background-image: url('https://www.leama.co.uk/dist/img/hero/hero-3-1920.jpg'); background-size: cover; background-position: center center; background-repeat: no-repeat; position: relative; }
+    #Footer::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.75); z-index: 1; }
+    #Footer .container { position: relative; z-index: 2; max-width: 1140px; }
+    #Footer a { color: var(--footer-text); text-decoration: none; transition: color 0.2s ease; }
+    #Footer a:hover { color: var(--accent); }
+    #Footer h3, #Footer h4 { font-weight: 600; margin-bottom: 1.2rem; font-size: 1.3rem; }
+    #Footer p, #Footer td, #Footer small, #Footer span { font-size: 0.95rem; }
+    #Footer .contact-block p, #Footer .director-block p { margin-bottom: 0.7rem; line-height: 1.6; display: flex; align-items: center; }
+    #Footer .contact-block i, #Footer .director-block i, #Footer .contact-block img.icon, #Footer .director-block img.icon { margin-right: 0.7em; width: 1.2em; height: 1.2em; text-align: center; flex-shrink: 0; filter: invert(90%) sepia(0%) saturate(7479%) hue-rotate(186deg) brightness(110%) contrast(95%); }
+    #Footer .contact-block a:hover img.icon, #Footer .director-block a:hover img.icon, #Footer .contact-block a:hover i, #Footer .director-block a:hover i { filter: invert(27%) sepia(99%) saturate(3110%) hue-rotate(346deg) brightness(90%) contrast(111%); }
+    #Footer .contact-block .address-link span { padding-left: calc(1.2em + 0.7em); display: block; margin-top: -0.3em; }
+    #Footer .Hours { border: none; color: var(--footer-text); width: 100%; margin-top: 1rem; }
+    #Footer .Hours td { border-top: 1px solid #444; padding: 0.6rem 0; }
+    #Footer .Hours tr:first-child td { border-top: none; }
+    #Footer .Hours span { display: inline-block; min-width: 110px; }
+    #Footer .social-icons { margin-top: 1rem; display: flex; gap: 0.7rem; align-items: center; }
+    #Footer .social-icons a { display: inline-flex; align-items: center; justify-content: center; width: 38px; height: 38px; line-height: 38px; text-align: center; border-radius: 50%; color: #fff; transition: opacity 0.2s ease; background-color: rgba(255, 255, 255, 0.1); }
+    #Footer .social-icons a:hover { opacity: 0.8; }
+    #Footer .social-icons img.icon { width: 20px; height: 20px; margin-right: 0; filter: invert(1); }
+    #Footer .social-icons a[href*="linkedin.com"] img.icon { filter: none; }
+    #Footer .footer-form { background: rgba(0,0,0,0.4); padding: 2rem; border-radius: var(--radius); }
+    #Footer .footer-form h4 { text-align: center; margin-bottom: 1.5rem; }
+    #Footer .form-group { margin-bottom: 1.2rem; }
+    #Footer .form-label { display: block; margin-bottom: 0.5rem; font-size: 0.85rem; color: var(--fg-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    #Footer .form-control { background-color: var(--form-input-bg); border: 1px solid var(--form-input-border); color: var(--fg); padding: 0.8rem 1rem; border-radius: var(--radius); width: 100%; font-family: inherit; font-size: 0.95rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    #Footer .form-control:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(221, 34, 34, 0.3); }
+    #Footer textarea.form-control { resize: vertical; min-height: 100px; }
+    #Footer .required-asterisk { color: var(--accent); font-style: normal; margin-left: 0.2em; }
+    #Footer .footer-form-submit { text-align: right; margin-top: 1.5rem; }
+    #Footer .btn-submit { background-color: var(--accent); color: #fff; border: none; padding: 0.8rem 2rem; font-size: 1rem; text-transform: uppercase; letter-spacing: 0.05em; border-radius: var(--radius); cursor: pointer; transition: background-color 0.2s ease; }
+    #Footer .btn-submit:hover:not(:disabled) { background-color: #a00; }
+    #Footer .btn-submit:disabled { background-color: #555; cursor: not-allowed; }
+    #Footer .row { display: flex; flex-wrap: wrap; margin-left: -15px; margin-right: -15px; }
+    #Footer [class*="col-"] { padding-left: 15px; padding-right: 15px; width: 100%; }
+    @media (min-width: 768px) { #Footer .col-sm-6 { flex: 0 0 50%; max-width: 50%; } #Footer .col-sm-12 { flex: 0 0 100%; max-width: 100%; } }
+    @media (min-width: 992px) { #Footer .col-md-4 { flex: 0 0 33.3333%; max-width: 33.3333%; } #Footer .col-md-8 { flex: 0 0 66.6667%; max-width: 66.6667%; } }
+    #Footer hr { border: 0; border-top: 1px solid #444; margin: 1.5rem 0; }
+    /* Utility classes used in footer HTML - added here for completeness if not globally defined */
+    #Footer .text-white { color: #fff !important; } /* Ensure text is white */
+    #Footer .text-accent { color: var(--accent) !important; }
+    #Footer .text-right { text-align: right; }
+    #Footer .mb-2 { margin-bottom: 0.5rem !important; }
+    #Footer .mb-3 { margin-bottom: 1rem !important; }
+    #Footer .mt-4 { margin-top: 1.5rem !important; }
+    #Footer .px-0 { padding-left: 0 !important; padding-right: 0 !important; }
+    #Footer .pt-3 { padding-top: 1rem !important; }
+    /* --- End: New Footer Styles --- */
+
+    /* --- Footer (Sticky Option) --- */
+    .car-footer {
+      background: var(--bg); border-top: 1px solid #222; transition: all 0.3s ease;
+    }
+    .car-footer__inner {
+        display: flex; justify-content: space-between; align-items: center; padding: 1rem 0;
+    }
+    .car-footer.sticky {
+      position: fixed; bottom: 0; left: 0; width: 100%;
+      box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.4); border-top: 1px solid #444; z-index: 900;
+    }
+    .car-footer.sticky .car-footer__inner {
+        width: 90%; max-width: var(--max-w); margin: 0 auto;
+    }
+    .car-footer__brand { font-size: 1.4rem; font-weight: 700; line-height: 1.2; }
+    .car-footer__model { font-size: 1rem; opacity: 0.8; }
+    .car-footer__price { text-align: right; }
+    .car-footer__full { display: block; font-size: 1.4rem; font-weight: 600; color: var(--accent); }
+    .car-footer__monthly { display: block; font-size: 0.85rem; color: var(--fg-muted); margin-top: 0.1rem; }
+
+
+    /* --- Modal --- */
+    .modal {
+      position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.92); display: flex; align-items: center; justify-content: center;
+      visibility: hidden; opacity: 0; transition: opacity 0.3s ease, visibility 0s 0.3s linear;
+      z-index: 2000;
+    }
+    .modal.open { visibility: visible; opacity: 1; transition-delay: 0s; }
+    .modal__content {
+      position: relative; width: 90vw; height: 90vh; max-width: 1400px; max-height: 1000px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .modal__img {
+      display: block; max-width: 100%; max-height: 100%; object-fit: contain; border-radius: var(--radius);
+    }
+    .modal__btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(0,0,0,0.4); border: none; color: #fff; font-size: 2rem; font-weight: bold;
+      cursor: pointer; padding: 0.5rem; line-height: 1; border-radius: 50%; width: 50px; height: 50px;
+      display: flex; align-items: center; justify-content: center; transition: background-color 0.2s ease;
+      z-index: 2010;
+    }
+    .modal__btn:hover { background: rgba(0,0,0,0.7); }
+    .modal__btn--prev { left: 1rem; }
+    .modal__btn--next { right: 1rem; }
+    .modal__btn--close {
+      top: 1rem; right: 1rem; transform: none; font-size: 1.8rem; width: 40px; height: 40px; z-index: 2011;
+    }
+
+    /* --- Responsive Design --- */
+    @media (min-width: 1300px) { /* Show desktop nav */
+        .header__nav { display: block; }
+        .mobile-menu-btn { display: none; } /* Hide hamburger */
+        .header__left { gap: 0; } /* No gap needed on desktop */
+    }
+
+    @media (max-width: 1299.98px) { /* Hide desktop nav, show mobile button */
+        .header__nav { display: none; }
+        .mobile-menu-btn { display: inline-flex; } /* Use inline-flex for alignment */
+        .header__inner { /* Adjust justification */
+             justify-content: space-between;
+        }
+        .header__left {
+             /* Ensure logo doesn't get pushed too far */
+        }
+         .header__info { /* Ensure right-side info aligns correctly */
+            /* Add styles if needed */
+         }
+    }
+
+    @media (min-width: 768px) { /* Medium screens and up */
+        .gallery__item { flex: 0 0 45vw; }
+        .car-overview__inner { grid-template-columns: 1fr 1fr; }
+        .car-overview__image { order: 1; }
+        .car-overview__text { order: 0; }
+        .spec-grid { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+        .v-gallery__grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    }
+
+    @media (min-width: 1024px) { /* Larger screens */
+        .gallery__item { flex: 0 0 30vw; }
+        .spec-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+    }
+
+    @media (max-width: 767px) { /* Smaller tablets and phones */
+        .car-summary__inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        .car-summary__price { text-align: left; margin-top: 0.5rem; }
+        .actions { flex-direction: column; align-items: stretch; }
+        .btn { width: 100%; text-align: center; justify-content: center; }
+        .car-footer__inner { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+        .car-footer__price { text-align: left; margin-top: 0.5rem; }
+        .modal__btn--prev { left: 0.5rem; }
+        .modal__btn--next { right: 0.5rem; }
+        #Footer .footer-form { padding: 1.5rem; } /* Less padding on mobile form */
+    }
+
+    @media (max-width: 480px) { /* Small phones */
+        :root { --header-h: 80px; --sidebar-width: 250px; } /* Adjust header height */
+        header#Header_.shrink { height: 50px; }
+        .header__phone { display: none; } /* Hide text phone */
+        .phone-icon-link { display: block; } /* Show icon phone link */
+        .header__inner { justify-content: space-between; }
+        .header__logo img { height: 60px; }
+        header#Header_.shrink .header__logo img { height: 40px; }
+
+        .gallery__item { flex: 0 0 85vw; }
+        .gallery__btn { width: 40px; height: 40px; }
+        .gallery__btn img { width: 18px; height: 18px; }
+
+        .car-summary__brand { font-size: 1.5rem; }
+        .car-summary__full { font-size: 1.5rem; }
+
+        .btn { padding: 0.7rem 1rem; font-size: 0.9rem; }
+
+        .car-overview__text h2 { font-size: 1.4rem; }
+        .car-overview__text h3 { font-size: 1rem; }
+        .car-overview__text p { font-size: 0.9rem; }
+
+        .spec-grid { grid-template-columns: 1fr; }
+        .spec-grid div { padding-bottom: 0.8rem; }
+
+        .v-gallery__grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+
+        .modal__content { width: 95vw; height: 85vh; }
+        .modal__btn { width: 40px; height: 40px; font-size: 1.5rem;}
+        .modal__btn--close { top: 0.5rem; right: 0.5rem; width: 35px; height: 35px; font-size: 1.4rem;}
+    }
+  </style>
+</head>
+
+<body>
+  <header id="Header_">
+    <div class="header__inner container">
+      <div class="header__left"> <button class="mobile-menu-btn" id="mobile-menu-toggle" aria-label="Open menu" aria-expanded="false">
+          <img src="/assets/menu.png" alt="Menu">
+        </button>
+        <a href="/" class="header__logo">
+          <img src="https://www.leama.co.uk/dist/img/logo.png" alt="Leama Specialist Cars">
+        </a>
+      </div>
+      <nav class="header__nav"> <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/stock">Our Stock</a></li>
+          <li><a href="/previously-sold">Previously Sold</a></li>
+          <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+          <li><a href="/finance">Finance</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/contact-us">Contact</a></li>
+        </ul>
+      </nav>
+      <div class="header__info">
+        <a href="tel:01565832900" class="header__phone">01565 832900</a>
+        <a href="tel:01565832900" class="phone-icon-link" aria-label="Call Us">
+          <img src="/assets/phone.png" alt="Call" class="phone-icon">
+        </a>
+        </div>
+    </div>
+  </header>
+
+  <nav class="sidebar-nav" id="sidebar-nav" aria-hidden="true">
+      <button class="sidebar-nav__close-btn" id="sidebar-close" aria-label="Close menu">×</button>
+      <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/stock">Our Stock</a></li>
+          <li><a href="/previously-sold">Previously Sold</a></li>
+          <li><a href="/prestige-leasing">Prestige Leasing</a></li>
+          <li><a href="/finance">Finance</a></li>
+          <li><a href="/reviews">Reviews</a></li>
+          <li><a href="/contact-us">Contact</a></li>
+      </ul>
+      <div class="sidebar-nav__contact">
+          <a href="tel:01565832900">
+              <img src="/assets/phone.png" alt="" class="icon icon-sm"> 01565 832900
+          </a>
+          </div>
+  </nav>
+
+  <section class="car-summary">
+    <div class="car-summary__inner container">
+      <div>
+        <h1 class="car-summary__brand">Mercedes</h1>
+        <p class="car-summary__model">CLA 180 AMG LINE PREMIUM</p>
+      </div>
+      <div class="car-summary__price">
+        <span class="car-summary__full">£28,990</span>
+        <small class="car-summary__monthly">From £386.32 p/m</small>
+      </div>
+    </div>
+  </section>
+
+  <section class="gallery">
+    <button class="gallery__btn gallery__btn--prev" aria-label="Previous Image">
+        <img src="/assets/image.png" alt="Previous" style="transform: scaleX(-1);">
+    </button>
+    <div class="gallery__viewport" id="gallery-viewport">
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-2604ed65f320.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-ba8c46082484.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-d409fb8b68ef.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-9166c879977a.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-94362ae4f485.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-c916a57ec597.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-bada2be698af.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-f36b71ed6a20.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-30db84e0eb10.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-5f745ee8526f.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div>
+        <div class="gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-48a416547fe5.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image" loading="lazy"></div> </div>
+    <button class="gallery__btn gallery__btn--next" aria-label="Next Image">
+        <img src="/assets/image.png" alt="Next">
+    </button>
+  </section>
+
+  <section class="actions container">
+    <a href="https://wa.me/447976914729" target="_blank" rel="noopener" class="btn btn--whatsapp">
+      <img src="/assets/whatsapp-icon.png" alt="" class="icon"> WhatsApp Mark
+    </a>
+    <a href="https://wa.me/447711840456" target="_blank" rel="noopener" class="btn btn--whatsapp">
+      <img src="/assets/whatsapp-icon.png" alt="" class="icon"> WhatsApp Jonathan
+    </a>
+    <a href="/finance?item=626928" class="btn btn--finance">Apply for finance</a>
+    <button id="view-images-btn" class="btn btn--view-images">
+      View All <span id="image-count">11</span> Images
+    </button>
+    <a href="/contact-us?item=626928&car=Mercedes%20CLA 180 AMG LINE PREMIUM" class="btn btn--enquire">Enquire</a>
+  </section>
+
+  <section class="car-overview">
+    <div class="car-overview__inner container">
+      <div class="car-overview__text">
+        <h2>Mercedes Overview</h2>
+        <h3>Mercedes CLA 180 AMG LINE PREMIUM in Obsidian black Metallic</h3>
+        <p>We are delighted to offer this immaculate Condition One Owner Mercedes Benz CLA  180 AMG LINE PREMIUM SALOON IN OBSIDIAN BLACK WITH SAGE GREY ARTICO INTERIOR, 19 INCH ALLOYS . STILL UNDER MANUFACTURERS WARRANTY TILL 31st MARCH 2027, RECENTLY SERVICED NAVIGATION SYSTEM,HEATED FRONT SEATS,BLUE TOOTH, MBUX, COMPETATIVE FINANCE OPTIONS AT 9.9% APR, PLEASE CALL FOR FURTHER DETAILS ON 07976914729 OR 07711840456</p>
+      </div>
+      <div class="car-overview__image">
+          <img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-2604ed65f320.jpg" alt="Overview image of Mercedes CLA 180 AMG LINE PREMIUM" loading="lazy">
+      </div>
+    </div>
+  </section>
+
+  <section class="car-specs">
+    <div class="car-specs__inner container">
+      <h2>Vehicle Details</h2>
+      <div class="spec-grid">
+        <div><strong>Odometer:</strong> 12,000 Miles</div>
+        <div><strong>Year:</strong> 2024 (24)</div>
+        <div><strong>Colour:</strong> Obsidian black Metallic</div>
+        <div><strong>Fuel Type:</strong> Petrol/Electric Hybrids</div>
+        <div><strong>Body Type:</strong> Coupe</div>
+        <div><strong>Doors:</strong> 4</div>
+        <div><strong>Transmission:</strong> Automatic</div>
+        <div><strong>Engine Size:</strong> 1.3 L</div>
+        <div class="spec-item-number"><strong>Item Number:</strong> 626928</div>
+      </div>
+    </div>
+  </section>
+
+   <section class="v-gallery" id="v-gallery-section">
+     <div class="v-gallery__inner container">
+      <h2>All Images (<span id="v-gallery-count">11</span>)</h2>
+      <div class="v-gallery__grid" id="v-gallery-grid">
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-2604ed65f320.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 1" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-ba8c46082484.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 2" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-d409fb8b68ef.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 3" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-9166c879977a.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 4" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-94362ae4f485.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 5" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-c916a57ec597.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 6" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-bada2be698af.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 7" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-f36b71ed6a20.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 8" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-30db84e0eb10.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 9" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-5f745ee8526f.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 10" loading="lazy"></div>
+          <div class="v-gallery__item"><img src="https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-48a416547fe5.jpg" alt="Mercedes CLA 180 AMG LINE PREMIUM image 11" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer id="Footer" class="section background text-white">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-sm-6 mb-3 contact-block">
+                <h4 class="h3 text-white mb-3">Contact & Hours</h4>
+                <p><a href="#" target="_blank" rel="noopener" class="address-link"><i class="fas fa-map-marker-alt text-accent icon"></i> <span>Brookdale Centre,</span> <span>Manchester Road,</span> <span>Knutsford, Cheshire, WA16 0SR</span></a></p>
+                <p><a href="tel:01565832900"><img src="/assets/phone.png" alt="" class="icon">Office: 01565 832900</a></p>
+                <table class="Hours table"><tbody><tr><td class="px-0"><span>Monday - Friday</span></td><td class="px-0 text-right">08:30 - 17:30</td></tr><tr><td class="px-0"><span>Saturday - Sunday</span></td><td class="px-0 text-right"><small>By Appointment</small></td></tr></tbody></table>
+            </div>
+            <div class="col-md-4 col-sm-6 mb-3 director-block">
+                <h4 class="h3 text-white mb-3">Directors</h4>
+                <p><i class="fas fa-user text-accent icon"></i><strong>Mark Platts</strong></p> <p><a href="tel:07976914729"><img src="/assets/phone.png" alt="" class="icon">07976 914729</a></p> <p><a href="mailto:mark@leama.co.uk"><i class="fas fa-at text-accent icon"></i>mark@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447976914729" aria-label="WhatsApp Mark"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr>
+                <p><i class="fas fa-user text-accent icon"></i><strong>Jonathan Travis</strong></p> <p><a href="tel:07711840456"><img src="/assets/phone.png" alt="" class="icon">07711 840456</a></p> <p><a href="mailto:jonathan@leama.co.uk"><i class="fas fa-at text-accent icon"></i>jonathan@leama.co.uk </a></p> <div class="social-icons mb-3"><a target="_blank" rel="noopener" href="https://wa.me/447711840456" aria-label="WhatsApp Jonathan"><img src="/assets/whatsapp-icon.png" alt="WhatsApp" class="icon"></a></div> <hr>
+                <h4 class="h3 text-white mb-2 pt-3">Connect With Us</h4>
+                <div class="social-icons" itemscope itemtype="http://schema.org/Organization"><meta itemprop="url" content="https://www.leama.co.uk"><a target="_blank" rel="noopener" itemprop="sameAs" href="https://ca.linkedin.com/company/leamaspecialistcars" aria-label="LinkedIn"><img src="/assets/Linkedin.png" alt="LinkedIn" class="icon"></a> <a target="_blank" rel="noopener" itemprop="sameAs" href="https://www.instagram.com/leamacars/" aria-label="Instagram"><img src="/assets/instagram.png" alt="Instagram" class="icon"></a></div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                <form class="footer-form" id="footer-contact-form" action="/path-to-your-submit-script" method="post" novalidate>
+                    <h4 class="h3 text-white mb-3">Get In Touch</h4>
+                    <input hidden name="form_subject" value="Stock Page Footer Enquiry">
+                    <div class="form-group"><label class="form-label" for="footer_name">Name <i class="required-asterisk">*</i></label><input name="customer_name" type="text" class="form-control" id="footer_name" required placeholder="Your Full Name"></div>
+                    <div class="form-group"><label class="form-label" for="footer_email">Email <i class="required-asterisk">*</i></label><input name="customer_email" type="email" class="form-control" id="footer_email" required placeholder="your.email@example.com"></div>
+                    <div class="form-group"><label class="form-label" for="footer_phone">Phone No. <i class="required-asterisk">*</i></label><input name="customer_phone" type="tel" class="form-control" id="footer_phone" required placeholder="Your Contact Number"></div>
+                    <div class="form-group"><label class="form-label" for="footer_message">Message <i class="required-asterisk">*</i></label><textarea class="form-control" name="customer_message" rows="4" id="footer_message" required placeholder="How can we help?"></textarea></div>
+                    <div class="footer-form-submit"><button id="footerSendBtn" type="submit" class="btn-submit">Send Message</button></div>
+                </form>
+                <script>
+                     // Basic example: Enable button on load (replace with actual logic/reCAPTCHA)
+                     const footerSendBtn = document.getElementById('footerSendBtn');
+                     if (footerSendBtn) { footerSendBtn.disabled = false; }
+                 </script>
+            </div>
+        </div>
+    </div>
+  </footer>
+  <footer class="car-footer" id="car-footer"> <div class="car-footer__inner container">
+      <div class="car-footer__details">
+        <h2 class="car-footer__brand">Mercedes</h2>
+        <p class="car-footer__model">CLA 180 AMG LINE PREMIUM</p>
+      </div>
+      <div class="car-footer__price">
+        <span class="car-footer__full">£28,990</span>
+        <small class="car-footer__monthly">From £386.32 p/m</small>
+      </div>
+    </div>
+  </footer>
+
+  <div class="modal" id="image-modal">
+    <div class="modal__content">
+      <button class="modal__btn modal__btn--close" id="modal-close" aria-label="Close image viewer">✕</button>
+      <button class="modal__btn modal__btn--prev" id="modal-prev" aria-label="Previous image">‹</button>
+      <img class="modal__img" id="modal-img" src="" alt="Enlarged car image">
+      <button class="modal__btn modal__btn--next" id="modal-next" aria-label="Next image">›</button>
+    </div>
+  </div>
+
+  <script>
+    // Use strict mode for better error handling
+    'use strict';
+
+    // --- Data Injected by Python ---
+    const carImages = ["https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-2604ed65f320.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-ba8c46082484.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-d409fb8b68ef.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-9166c879977a.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-94362ae4f485.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-c916a57ec597.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-bada2be698af.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-f36b71ed6a20.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-30db84e0eb10.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-5f745ee8526f.jpg", "https://smgmedia.blob.core.windows.net/images/113343/1024/mercedes-unlisted-coupe-petrol-electric-hybrids-48a416547fe5.jpg"];
+    const carBrandModel = "Mercedes CLA 180 AMG LINE PREMIUM";
+
+    // --- DOM Elements ---
+    const body = document.body;
+    const header = document.getElementById('Header_');
+    const galleryViewport = document.getElementById('gallery-viewport');
+    const galleryPrevBtn = document.querySelector('.gallery__btn--prev');
+    const galleryNextBtn = document.querySelector('.gallery__btn--next');
+    const viewImagesBtn = document.getElementById('view-images-btn');
+    const vGallerySection = document.getElementById('v-gallery-section');
+    const vGalleryGrid = document.getElementById('v-gallery-grid');
+    const stickyFooter = document.getElementById('car-footer');
+    const modal = document.getElementById('image-modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalCloseBtn = document.getElementById('modal-close');
+    const modalPrevBtn = document.getElementById('modal-prev');
+    const modalNextBtn = document.getElementById('modal-next');
+    const carSummarySection = document.querySelector('.car-summary');
+    const mobileMenuToggle = document.getElementById('mobile-menu-toggle');
+    const sidebar = document.getElementById('sidebar-nav');
+    const sidebarCloseBtn = document.getElementById('sidebar-close');
+
+    let currentModalIndex = 0;
+
+    // --- Functions ---
+    const openModal = (index) => {
+        if (!modal || !modalImg || !carImages || index < 0 || index >= carImages.length) return;
+        currentModalIndex = index;
+        modalImg.src = carImages[currentModalIndex];
+        modalImg.alt = `${carBrandModel} - Image ${currentModalIndex + 1} of ${carImages.length}`;
+        modal.classList.add('open');
+        body.style.overflow = 'hidden'; // Prevent background scroll only when modal is open
+    };
+
+    const closeModal = () => {
+        if (!modal) return;
+        modal.classList.remove('open');
+        // Only restore scroll if sidebar isn't also open
+        if (!sidebar || !sidebar.classList.contains('open')) {
+             body.style.overflow = '';
+             body.classList.remove('sidebar-open'); // Ensure class is removed if modal closes but sidebar wasn't open
+        }
+    };
+
+    const showNextImage = () => {
+         if (!carImages || carImages.length === 0) return;
+        const nextIndex = (currentModalIndex + 1) % carImages.length;
+        openModal(nextIndex);
+    };
+
+    const showPrevImage = () => {
+      if (!carImages || carImages.length === 0) return;
+        const prevIndex = (currentModalIndex - 1 + carImages.length) % carImages.length;
+        openModal(prevIndex);
+    };
+
+    // --- Sidebar Functions ---
+    const openSidebar = () => {
+        if (!sidebar || !mobileMenuToggle) return;
+        sidebar.classList.add('open');
+        sidebar.setAttribute('aria-hidden', 'false');
+        mobileMenuToggle.setAttribute('aria-expanded', 'true');
+        body.classList.add('sidebar-open'); // Use class on body for overflow
+
+        // --- VIBRATE ---
+        if (navigator.vibrate) {
+            navigator.vibrate(50); // Vibrate for 50ms
+        }
+    };
+
+    const closeSidebar = () => {
+        if (!sidebar || !mobileMenuToggle) return;
+        sidebar.classList.remove('open');
+        sidebar.setAttribute('aria-hidden', 'true');
+        mobileMenuToggle.setAttribute('aria-expanded', 'false');
+        // Only remove class if modal isn't also open
+        if (!modal || !modal.classList.contains('open')) {
+          body.classList.remove('sidebar-open');
+        }
+    };
+
+
+    // --- Event Listeners ---
+
+    // 1. Header Shrink on Scroll
+    if (header) {
+        window.addEventListener('scroll', () => {
+            header.classList.toggle('shrink', window.scrollY > 50);
+        });
+    }
+
+    // 2. Horizontal Gallery Scroll Buttons & Image Click
+    if (galleryViewport) {
+        if (galleryPrevBtn && galleryNextBtn) {
+            const scrollHandler = (direction) => {
+                const firstItem = galleryViewport.firstElementChild;
+                if (!firstItem) return;
+                // Recalculate item width and gap dynamically in case of resize
+                const itemWidth = firstItem.getBoundingClientRect().width;
+                const gap = parseFloat(getComputedStyle(galleryViewport).gap) || 16; // Default gap
+                const scrollAmount = itemWidth + gap;
+                galleryViewport.scrollBy({ left: direction === 'next' ? scrollAmount : -scrollAmount, behavior: 'smooth' });
+            };
+            galleryPrevBtn.addEventListener('click', () => scrollHandler('prev'));
+            galleryNextBtn.addEventListener('click', () => scrollHandler('next'));
+
+            const checkScrollButtons = () => {
+                 if (!galleryViewport.firstElementChild) return;
+                 // Debounce or throttle resize/scroll checks if performance is an issue
+                 requestAnimationFrame(() => {
+                     if (!galleryViewport) return; // Check if element still exists
+                     const { scrollLeft, scrollWidth, clientWidth } = galleryViewport;
+                     const scrollEndReached = scrollLeft >= scrollWidth - clientWidth - 1; // Use 1px tolerance
+                     galleryPrevBtn.classList.toggle('hidden', scrollLeft < 1);
+                     galleryNextBtn.classList.toggle('hidden', scrollEndReached);
+                 });
+            };
+            // Use passive: true for scroll events for better performance
+            galleryViewport.addEventListener('scroll', checkScrollButtons, { passive: true });
+             // Use ResizeObserver for reliable element resize detection
+             if ('ResizeObserver' in window) {
+                  new ResizeObserver(checkScrollButtons).observe(galleryViewport);
+             } else { // Fallback for older browsers
+                  window.addEventListener('resize', checkScrollButtons);
+                  setTimeout(checkScrollButtons, 500); // Check after potential layout shifts
+             }
+             checkScrollButtons(); // Initial check on load
+        }
+
+        galleryViewport.addEventListener('click', (event) => {
+            const clickedImage = event.target.closest('.gallery__item img');
+            if (clickedImage && carImages && carImages.length > 0) {
+                const clickedSrc = clickedImage.getAttribute('src');
+                const index = carImages.findIndex(src => src === clickedSrc);
+                if (index !== -1) openModal(index);
+            }
+        });
+    }
+
+    // 3. "View All Images" Button Scroll
+    if (viewImagesBtn && vGallerySection) {
+        viewImagesBtn.addEventListener('click', () => {
+            vGallerySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+    }
+
+    // 4. Sticky Footer Logic
+    if (stickyFooter && carSummarySection && 'IntersectionObserver' in window) {
+      let headerHeight = header ? header.offsetHeight : 100;
+       // Update header height dynamically if header resizes (e.g., shrink effect)
+       if (header && 'ResizeObserver' in window) {
+          new ResizeObserver(() => { headerHeight = header.offsetHeight; }).observe(header);
+       }
+
+      const observerCallback = ([entry]) => {
+          if (stickyFooter) {
+              // Check if the top of the summary section is above the viewport top edge
+              const isAboveViewport = entry.boundingClientRect.top < 0;
+              // Check if the summary section is intersecting the viewport
+              const isIntersecting = entry.isIntersecting;
+              // Show sticky footer when summary top is above viewport AND it's not currently intersecting
+              stickyFooter.classList.toggle('sticky', isAboveViewport && !isIntersecting);
+          }
+      };
+      // Adjust rootMargin to ensure it only triggers after the header is passed
+      const observerOptions = { threshold: 0, rootMargin: `-${headerHeight}px 0px 0px 0px` };
+      const observer = new IntersectionObserver(observerCallback, observerOptions);
+      observer.observe(carSummarySection);
+    }
+
+    // 5. Modal Logic Initialization
+    if (modal && carImages && carImages.length > 0) {
+        if (vGalleryGrid) {
+            // Use event delegation for efficiency
+            vGalleryGrid.addEventListener('click', (event) => {
+                const clickedImage = event.target.closest('.v-gallery__item img');
+                if (clickedImage) {
+                    const clickedSrc = clickedImage.getAttribute('src');
+                    const index = carImages.findIndex(src => src === clickedSrc);
+                    if (index !== -1) openModal(index);
+                }
+            });
+            // Add keyboard accessibility to grid items
+             vGalleryGrid.querySelectorAll('.v-gallery__item img').forEach(img => {
+                 img.setAttribute('role', 'button');
+                 img.setAttribute('tabindex', '0'); // Make focusable
+                 img.addEventListener('keydown', (e) => {
+                     if (e.key === 'Enter' || e.key === ' ') {
+                         e.preventDefault(); // Prevent default spacebar scroll
+                         const clickedSrc = img.getAttribute('src');
+                         const index = carImages.findIndex(src => src === clickedSrc);
+                         if (index !== -1) openModal(index);
+                      }
+                 });
+             });
+        }
+
+        if (modalCloseBtn) modalCloseBtn.addEventListener('click', closeModal);
+        if (modalPrevBtn) modalPrevBtn.addEventListener('click', showPrevImage);
+        if (modalNextBtn) modalNextBtn.addEventListener('click', showNextImage);
+        // Close modal on background click
+        modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+
+        // Keyboard navigation for modal
+        document.addEventListener('keydown', (e) => {
+            if (modal.classList.contains('open')) {
+                if (e.key === 'Escape') closeModal();
+                else if (e.key === 'ArrowRight') showNextImage();
+                else if (e.key === 'ArrowLeft') showPrevImage();
+            }
+        });
+    } else {
+        // Hide the "View All Images" button if there are no images
+        if (viewImagesBtn) viewImagesBtn.style.display = 'none';
+    }
+
+    // 6. Sidebar Toggle Logic
+    if (mobileMenuToggle && sidebar && sidebarCloseBtn) {
+        mobileMenuToggle.addEventListener('click', openSidebar);
+        sidebarCloseBtn.addEventListener('click', closeSidebar);
+
+        // Optional: Close sidebar if clicking outside of it
+        document.addEventListener('click', (event) => {
+            // Check if sidebar is open and the click was outside both the sidebar and the toggle button
+            if (sidebar.classList.contains('open') &&
+                !sidebar.contains(event.target) &&
+                !mobileMenuToggle.contains(event.target)) {
+                closeSidebar();
+            }
+        });
+
+         // Optional: Close sidebar on 'Escape' key press
+         document.addEventListener('keydown', (e) => {
+             if (e.key === 'Escape' && sidebar.classList.contains('open')) {
+                 closeSidebar();
+             }
+         });
+    }
+
+
+    // Hide View Images button if no images exist (redundant check, already done in modal logic, but safe)
+    if (viewImagesBtn && (!carImages || carImages.length === 0)) {
+       viewImagesBtn.style.display = 'none';
+     }
+
+  </script>
+</body>
+</html>
